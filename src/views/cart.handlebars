@@ -1,0 +1,20 @@
+<div>
+<h1>Cart</h1>
+{{#if cart}}
+<h1>N° {{cart._id}}</h1>
+{{#each products}}
+    {{#with this}}
+    <div>
+        <h4> {{_id}} - Product: {{product.title}}</h4>
+        <p>Description: {{product.description}}</p>
+        <p>Price: {{product.price}}</p>
+        <p>Stock: {{product.stock}}</p>
+        <div type="button">Delete</div>
+    </div>
+    {{/with}}
+{{/each}}
+{{else}}
+<h3>You have not received any cart yet</h3>
+{{/if}}
+<div type="button"><a href="/products">Back a Products</a></div>
+</div>

@@ -1,0 +1,13 @@
+[
+	{
+		"id": 4,
+		"title": "producto de prueba",
+		"description": "descripción del producto de prueba",
+		"price": 600,
+		"thumbnail": "",
+		"code": "AED796",
+		"stock": 10,
+		"status": true,
+		"category": "Categoría 1"
+	}
+]
