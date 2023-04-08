@@ -10,7 +10,7 @@ const MongoStore = require('connect-mongo')
 const mongoose = require('mongoose')
 const http = require('http')
 const { db, port } = require('../src/config')
-const { userDb, passDb } = db
+const { userDb, passDb, msPass } = db
 const passport = require('passport')
 const initializePassport = require('./config/passport.config')
 
@@ -40,7 +40,7 @@ app.use(session({
     mongoUrl:`mongodb+srv://${userDb}:${passDb}@cluster0.zygdc.mongodb.net/session?retryWrites=true&w=majority`,
     mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
   }),
-  secret: 'loqueQuier4',
+  secret: msPass,
   resave: false,
   saveUninitialized: false
 }))

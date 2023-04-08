@@ -1,7 +1,8 @@
 <div>
 {{#if user}}
     <h1>Bienvenido {{user.first_name}} {{user.last_name}} - <a href="/auth/logout">Cerrar Sesión</a></h1>
-    <h1>Rol: {{user.role}}</h1>
+    <h1><a href="/session/current">Datos de Perfil</a></h1>
+    {{!-- <h1>Rol: {{user.role}}</h1> --}}
   {{else}}
     <h3>Login Error - <a href="/auth/logout">Volver</a></h1></h3>
   {{/if}}
