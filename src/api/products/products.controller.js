@@ -1,11 +1,11 @@
 const {Router} = require('express')
 const ProductDao = require('../../dao/Product.dao')
 const Product = new ProductDao()
-const ProductManager =  require('../../class/ProductManager')
+// const ProductManager =  require('../../class/ProductManager')
 const productError = require('../../utils/errors/product/product.error')
 const router = Router()
 
-const manager = new ProductManager()
+// const manager = new ProductManager()
 
 router.get('/', async(req, res) => {
     const {limit, page, sort, field, query} = req.query
@@ -28,7 +28,7 @@ router.post('/', async(req, res) => {
     const form = req.body
     const {title, description, price, thumbnail, code, stock, category} = req.body
     if(!title || !description || !price || !thumbnail || !code || !stock || !category){
-        productError( {title, description, price, code, stock, category, thumbnail});
+        productError(form);
     }
     const product = await Product.create(form) 
     const products = await Product.find()

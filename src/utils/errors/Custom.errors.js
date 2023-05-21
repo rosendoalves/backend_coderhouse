@@ -4,8 +4,6 @@ class CustomErrors {
     error.cause = cause
     error.name = name
     error.code = code
-    console.log('hola hola', error.cause)
-    console.log('hola hola', typeof error.cause)
     throw error
   }
 }
