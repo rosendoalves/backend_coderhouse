@@ -13,6 +13,7 @@ const { db, port } = require('../src/config')
 const { userDb, passDb, msPass } = db
 const passport = require('passport')
 const initializePassport = require('./config/passport.config')
+const errorHandler = require('./middlewares/errors/handler.errors')
 
 const messages = []
 const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access');
@@ -46,6 +47,7 @@ app.use(session({
 }))
 
 router(app)
+app.use(errorHandler)
 
 mongoose.set('strictQuery', false)
 mongoose.connect(`mongodb+srv://${userDb}:${passDb}@cluster0.zygdc.mongodb.net/ecommerce?retryWrites=true&w=majority`, error => {

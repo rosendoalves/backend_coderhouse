@@ -3,7 +3,8 @@ const local = require('passport-local')
 const User = require('../dao/models/User.model')
 const GitHubStrategy = require('passport-github2');
 const { createHash, isValidPasswordMethod } = require('../utils/cryptPassword')
-const { clientID_github, clientSecret_github } = require('./githubAuth.config')
+const { clientID_github, clientSecret_github } = require('./githubAuth.config');
+const userError = require('../utils/errors/user/user.error');
 
 const LocalStrategy = local.Strategy
 const initializePassport = () => {
@@ -16,6 +17,10 @@ const initializePassport = () => {
             let role = false
             try {
               const user = await User.findOne({ email: username });
+
+              if (!first_name || !last_name || !email || !age) {
+                userError({ first_name, last_name, age, email });
+              }
     
               if (user) {
                 console.log('El usuario ya existe');

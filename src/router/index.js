@@ -8,6 +8,7 @@ const authController = require('../auth/auth.controller')
 const cookiesController = require('../cookies/cookies.controller')
 const sessionController = require('../session/session.controller')
 const viewsTemplateController = require('../viewsTemplate/viewsTemplate.controller')
+const mockingProductsController = require('../api/products/mockingProducts.controller')
 
 const router = (app) => {
   // app.use('/', homeController)
@@ -20,6 +21,7 @@ const router = (app) => {
   app.use('/users', usersController)
   app.use('/cookies', cookiesController)
   app.use('/session', sessionController)
+  app.use('/mockingProducts', mockingProductsController)
 }
 
 module.exports = router
