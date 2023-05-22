@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const { privateAccess, publicAccess } = require('../middlewares')
+const { publicAccess } = require('../middlewares')
 const ProductDao = require('../dao/Product.dao')
 const ProductManager = new ProductDao()
 const CartDao = require('../dao/Cart.dao')
@@ -33,6 +33,42 @@ router.get('/carts/:cid', async(req, res) => {
       const cart = await CartManager.findOne(cid)  
       const {products} = cart
       res.render('cart.handlebars', {cart, products})
+})
+
+router.get('/loggerTest/:clase', async(req, res) => {
+  try {
+    const loggerType = req.params.clase;
+    switch (loggerType) {
+        case 'fatal':
+            req.logger.fatal("logger fatal")
+            break;
+        case 'error':
+            req.logger.error("logger error")
+            break;
+
+        case 'warning':
+            req.logger.warning("logger warning")
+            break;
+
+        case 'info':
+            req.logger.info("logger info")
+            break;
+
+        case 'http':
+            req.logger.http("logger http")
+            break;
+
+        case 'debug':
+            req.logger.debug("logger debug")
+            break;
+        default:
+            break;
+    }
+    res.status(200).json({message: 'success'});
+}
+catch (error) {
+    res.send(`something went wrong ${error}`)
+}
 })
 
 

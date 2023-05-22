@@ -1,7 +1,8 @@
 const express =  require('express')
+const cors = require('cors')
 const handlebars = require('express-handlebars')
 const Handlebars = require('handlebars');
-const {Server} = require('socket.io')
+// const {Server} = require('socket.io')
 const router = require('./router/index.js')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
@@ -14,8 +15,9 @@ const { userDb, passDb, msPass } = db
 const passport = require('passport')
 const initializePassport = require('./config/passport.config')
 const errorHandler = require('./middlewares/errors/handler.errors')
+const loggerMiddleware = require('./middlewares/logger.middlewares.js')
 
-const messages = []
+// const messages = []
 const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access');
 const app = express()
 
@@ -46,9 +48,11 @@ app.use(session({
   saveUninitialized: false
 }))
 
-router(app)
 app.use(errorHandler)
+app.use(loggerMiddleware)
+app.use(cors())
 
+router(app)
 mongoose.set('strictQuery', false)
 mongoose.connect(`mongodb+srv://${userDb}:${passDb}@cluster0.zygdc.mongodb.net/ecommerce?retryWrites=true&w=majority`, error => {
     if(error) { 
@@ -64,7 +68,7 @@ const httpServer = app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })
 
-const io = new Server(httpServer)
+// const io = new Server(httpServer)
 global.io = require('socket.io')(httpServer)
 
 global.io.on('connection', socket => {

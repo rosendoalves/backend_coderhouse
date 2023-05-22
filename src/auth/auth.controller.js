@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const passport = require('passport');
 const User = require('../dao/models/User.model')
-const { isValidPasswordMethod } = require('../utils/cryptPassword')
+// const { isValidPasswordMethod } = require('../utils/cryptPassword')
 
 const router = Router()
 
@@ -25,7 +25,8 @@ router.post('/', passport.authenticate('login', {failureRedirect:'auth/faillogin
     // res.status(201).json({ message: 'Sesión iniciada' })
     res.redirect('/products')
   } catch (error) {
-    console.log(error)
+    // console.log(error)
+    req.logger.error("Usuario no autenticado")
     res.status(500).json({ error: 'Internal server error' })
   }
 })

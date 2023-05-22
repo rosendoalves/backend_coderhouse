@@ -83,7 +83,8 @@ const initializePassport = () => {
                 // }
               return done(null, user);
             } catch (error) {
-              return done(error);
+              req.logger.error("Usuario no autenticado")
+              // return done(error);
             }
           }
         )
@@ -111,7 +112,7 @@ const initializePassport = () => {
                 };
     
                 const newUser = await User.create(newUserInfo);
-    
+                req.logger.info("Nuevo usuario registrado")
                 return done(null, newUser);
               }
               done(null, user);
