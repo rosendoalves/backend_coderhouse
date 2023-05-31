@@ -19,9 +19,24 @@ const loggerMiddleware = require('./middlewares/logger.middlewares.js')
 
 // const messages = []
 const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access');
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUiExpress = require('swagger-ui-express');
 const app = express()
 
 app.use(express.json())
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.1',
+        info: {
+            title: 'AppCoder By Rosendo Alves',
+            description: 'La documentación de los endpoints para el curso de Backend de CoderHouse'
+        }
+    },
+    apis: [`${__dirname}\\docs\\**\\*.yaml`]
+}
+
+const specs = swaggerJSDoc(swaggerOptions)
+app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 app.use(express.urlencoded({extended:true}))
 app.use(express.static(__dirname + '/public'))
 app.engine('handlebars', handlebars.engine(
