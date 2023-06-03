@@ -1,0 +1,294 @@
+openapi: "3.1.0"
+info:
+  title: Api Carts
+  version: "1.0"
+paths:
+  /api/carts/:
+    get:
+      summary: 'Obtain all carts'
+      tags:
+      - Carts
+      responses:
+        "200":
+          description: All carts obtained
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "#/components/schemas/Cart"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: No allowed
+        "500":
+          description: Server error
+    post:
+      summary: 'Create a cart'
+      tags:
+      - Carts
+      responses:
+        "200":
+          description: Cart created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: No allowed
+        "500":
+          description: Server error
+
+    delete:
+      summary: 'Delete all carts'
+      tags:
+      - Carts
+      responses:
+        "200":
+          description: All carts were deleted
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "#/components/schemas/Product"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: No allowed
+        "500":
+          description: Server error
+  /api/carts/{cid}:
+    get:
+      summary: 'Obtain an specific cart'
+      tags:
+      - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Cart id
+        schema:
+        type: string
+      responses:
+        "200":
+          description: Cart obtained
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: No allowed
+        "500":
+          description: Server error
+    put:
+      summary: 'Update products in cart'
+      tags:
+      - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Cart id
+        schema:
+        type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/updateCart"
+      responses:
+        "200":
+          description: Cart updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: No allowed
+        "500":
+          description: Server error
+    delete:
+      summary: 'Delete a products in cart'
+      tags:
+      - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Cart id
+        schema:
+        type: string
+      responses:
+        "200":
+          description: Products in cart deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: No allowed
+        "500":
+          description: Server error
+
+/api/carts/{cid}/products/{pid}:
+    put:
+      summary: 'Update an specific product in cart'
+      tags:
+      - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Cart id
+      - name: pid
+        in: path
+        required: true
+        description: Product id
+        schema:
+        type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/updateProduct"
+      responses:
+        "200":
+          description: Cart updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: No allowed
+        "500":
+          description: Server error
+    delete:
+      summary: 'Delete an specific product in cart'
+      tags:
+      - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Cart id
+      - name: pid
+        in: path
+        required: true
+        description: Product id
+        schema:
+        type: string
+      responses:
+        "200":
+          description: Product in cart deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: No allowed
+        "500":
+          description: Server error
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Mongo Id
+          example: 64001335ff13c54357a71000
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: 64001335ff13c54357a71000
+                  title:
+                    type: string
+                    example: Gamer computer
+                  description:
+                    type: string
+                    example: Gamer computer
+                  price:
+                    type: number
+                    example: 1
+                  thumbnail:
+                    type: string
+                    example: https://cdn.shopify.com/s/files/1/0549/2681/products/glorious_model_o_wired_full_size_black_matte_6.webp
+                  code:
+                    type: string
+                    example: ABC127
+                  stock:
+                    type: number
+                    example: 10
+                  status:
+                    type: boolean
+                    example: true
+                  category:
+                    type: string
+                    example: Computer
+              quantity:
+                type: number
+                example: 10
+  requestBodies:
+    updateCart:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: object
+                properties:
+                  product:
+                    type: string
+                    example: 64001335ff13c54357a71000
+                  quantity:
+                    type: number
+                    example: 2
+    updateProduct:
+      type: object
+      properties:
+        quantity:
+          type: number
+          example: 11
+          description: new quantity of product

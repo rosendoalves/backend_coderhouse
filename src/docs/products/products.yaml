@@ -1,0 +1,288 @@
+openapi: "3.1.0"
+info:
+  title: Api Products
+  version: "1.0"
+paths:
+  /api/products/:
+    get:
+      summary: 'Obtain all products'
+      tags:
+      - Products
+      responses:
+        "200":
+          description: All products obtained
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "#/components/schemas/Product"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: No allowed
+        "500":
+          description: Server error
+    post:
+      summary: 'Create a product'
+      tags:
+      - Products
+      responses:
+        "200":
+          description: Product created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: No allowed
+        "500":
+          description: Server error
+    delete:
+      summary: 'Delete all products'
+      tags:
+      - Products
+      responses:
+        "200":
+          description: All products deleted
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "#/components/schemas/Product"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: No allowed
+        "500":
+          description: Server error
+
+  /api/products/{pid}:
+    get:
+      summary: 'Obtain an specific product'
+      tags:
+      - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Product id
+        schema:
+        type: string
+      responses:
+        "200":
+          description: Product obtained
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: No allowed
+        "500":
+          description: Server error
+    put:
+      summary: 'Update a product'
+      tags:
+      - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Product id
+        schema:
+        type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/updateProduct"
+      responses:
+        "200":
+          description: Product updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: No allowed
+        "500":
+          description: Server error
+    delete:
+      summary: 'Delete a product'
+      tags:
+      - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Product id
+        schema:
+        type: string
+      responses:
+        "200":
+          description: Product deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: No allowed
+        "500":
+          description: Server error
+
+
+  /api/mockingproducts/:
+    get:
+      summary: 'Obtain all products mockup with faker-js'
+      tags:
+      - Mocking Products
+      responses:
+        "200":
+          description: All products obtained
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "#/components/schemas/Product"
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Mongo Id
+        title:
+          type: string
+          description: Product's name
+        description:
+          type: string
+          description: Product specifications
+        price:
+          type: number
+          description: value in dollars
+        thumbnail:
+          type: string
+          description: URL of image to show the product
+        code:
+          type: string
+          description: Code alphanumeric to identify the product
+        stock:
+          type: number
+          description: Quantity of units available
+        status:
+          type: boolean
+          description: Enabled or Disabled
+        category:
+          type: string
+          description: The group of products
+      example:
+        _id: 64001335ff13c54357a71000
+        title: Analogic mouse gamer
+        description: Mouse for gamer computers with led lights and wireless
+        price: 100
+        thumbnail: https://cdn.shopify.com/s/files/1/0549/2681/products/glorious_model_o_wired_full_size_black_matte_6.webp
+        code: ABC123
+        stock: 5
+        status: true
+        category: Periferics
+  requestBodies:
+    updateProduct:
+      description: Body with product's information to update
+      properties:
+        _id:
+          type: string
+          description: Mongo Id
+        title:
+          type: string
+          description: Product's name
+        description:
+          type: string
+          description: Product specifications
+        price:
+          type: number
+          description: value in dollars
+        thumbnail:
+          type: string
+          description: URL of image to show the product
+        code:
+          type: string
+          description: Code alphanumeric to identify the product
+        stock:
+          type: number
+          description: Quantity of units available
+        status:
+          type: boolean
+          description: Enabled or Disabled
+        category:
+          type: string
+          description: The group of products
+      example:
+        _id: 64001335ff13c54357a71000
+        title: Keyboard gamer
+        description: Keyboard for gamer computers with led lights and wireless
+        price: 100
+        thumbnail: https://cdn.shopify.com/s/files/1/0549/2681/products/glorious_model_o_wired_full_size_black_matte_6.webp
+        code: ABC124
+        stock: 5
+        status: true
+        category: Periferics
+    createProduct:
+      description: Body with product's information to create
+      properties:
+        title:
+          type: string
+          description: Product's name
+        description:
+          type: string
+          description: Product specifications
+        price:
+          type: number
+          description: value in dollars
+        thumbnail:
+          type: string
+          description: URL of image to show the product
+        code:
+          type: string
+          description: Code alphanumeric to identify the product
+        stock:
+          type: number
+          description: Quantity of units available
+        status:
+          type: boolean
+          description: Enabled or Disabled
+        category:
+          type: string
+          description: The group of products
+      example:
+        title: Keyboard gamer
+        description: Keyboard for gamer computers with led lights and wireless
+        price: 100
+        thumbnail: https://cdn.shopify.com/s/files/1/0549/2681/products/glorious_model_o_wired_full_size_black_matte_6.webp
+        code: ABC124
+        stock: 5
+        status: true
+        category: Periferics

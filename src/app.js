@@ -29,7 +29,7 @@ const swaggerOptions = {
         openapi: '3.0.1',
         info: {
             title: 'AppCoder By Rosendo Alves',
-            description: 'La documentación de los endpoints para el curso de Backend de CoderHouse'
+            description: 'Documentation of Backend de CoderHouse'
         }
     },
     apis: [`${__dirname}\\docs\\**\\*.yaml`]
