@@ -1,41 +1,42 @@
-const { Router } = require('express')
+const Route = require('../router/router')
 const { publicAccess, privateAccess } = require('../middlewares')
 const ProductDao = require('../dao/mongoClassManagers/product/Product.dao')
 const ProductManager = new ProductDao()
 const CartDao = require('../dao/mongoClassManagers/cart/Cart.dao')
 const CartManager = new CartDao()
 
-const router = Router()
+class ViewsTemplateRouter extends Route {
+  init() {
 
-router.get('/', privateAccess, (req, res) => {
+this.get('/', ['PUBLIC'], privateAccess, (req, res) => {
   const { user } = req.session
   res.render('profile.handlebars', { user })
 })
 
-router.get('/login', publicAccess, (req, res) => {
+this.get('/login', ['PUBLIC'], publicAccess, (req, res) => {
   res.render('login.handlebars')
 })
 
-router.get('/signup', publicAccess, (req, res) => {
+this.get('/signup', ['PUBLIC'], publicAccess, (req, res) => {
   res.render('signup.handlebars')
 })
 
-router.get('/products', async(req, res) => {
+this.get('/products', ['PUBLIC'],  async(req, res) => {
   const products = await ProductManager.find()
   const payload = products.payload
   const { user } = req.session
-  const {admin} = req.session.role === 'admin' ? true : false
+  const {admin} = req.session.role === 'ADMIN' ? true : false
   res.render('products.handlebars', {products, payload, user, admin})
 })
 
-router.get('/carts/:cid', async(req, res) => {
+this.get('/carts/:cid', ['PUBLIC'], async(req, res) => {
   const {cid} = req.params
       const cart = await CartManager.findOne(cid)  
       const {products} = cart
       res.render('cart.handlebars', {cart, products})
 })
 
-router.get('/loggerTest/:clase', async(req, res) => {
+this.get('/loggerTest/:clase', ['PUBLIC'], async(req, res) => {
   try {
     const loggerType = req.params.clase;
     switch (loggerType) {
@@ -70,6 +71,7 @@ catch (error) {
     res.send(`something went wrong ${error}`)
 }
 })
+  }
+}
 
-
-module.exports = router
+module.exports = ViewsTemplateRouter

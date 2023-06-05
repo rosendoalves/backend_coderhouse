@@ -1,8 +1,9 @@
 const passport = require('passport')
 const local = require('passport-local')
-const User = require('../dao/mongoClassManagers/models/User.model')
+// const User = require('../dao/mongoClassManagers/models/User.model')
+const User = require('../repositories/user')
 const GitHubStrategy = require('passport-github2');
-const { createHash, isValidPasswordMethod } = require('../utils/cryptPassword')
+const { isValidPasswordMethod } = require('../utils/cryptPassword')
 const { clientID_github, clientSecret_github } = require('./githubAuth.config');
 const userError = require('../utils/errors/user/user.error');
 
@@ -10,9 +11,11 @@ const LocalStrategy = local.Strategy
 const initializePassport = () => {
     passport.use(
         'register',
+        // ['PUBLIC'],
         new LocalStrategy(
           { passReqToCallback: true, usernameField: 'email' },
           async (req, username, password, done) => {
+            console.log("🚀 ~ file: passport.config.js:18 ~ password:", password)
             const { first_name, last_name, age, email } = req.body
             let role = false
             try {
@@ -36,10 +39,9 @@ const initializePassport = () => {
                 last_name,
                 email,
                 age,
-                password: createHash(password),
-                role: role ? 'admin' : 'user'
+                password,
+                role: role ? 'ADMIN' : 'USER'
               };
-    
               const newUser = await User.create(newUserInfo);
               return done(null, newUser);
             } catch (error) {
@@ -66,14 +68,13 @@ const initializePassport = () => {
           async (username, password, done) => {
             try {
               const user = await User.findOne({ email: username });
-    
               if (!user) {
                 console.log('Usuario no existe');
                 return done(null, false);
               }
-    
+            
               if (!isValidPasswordMethod(password, user)) return done(null, false);
-               delete user.password
+              //  delete user.password
                 // req.session.user = {
                 // first_name: user.first_name,
                 // last_name: user.last_name,

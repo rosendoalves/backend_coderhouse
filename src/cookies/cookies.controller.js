@@ -1,21 +1,24 @@
-const { Router } = require('express')
+const Route = require('../router/router')
 
-const router = Router()
+class CookiesRouter extends Route {
+  init(){
 
-router.get('/view', (req, res) => {
+this.get('/view', (req, res) => {
   res.render('index.handlebars')
 })
 
-router.get('/', (req, res) => {
+this.get('/', (req, res) => {
   const cookies = req.cookies
 
   res.json(cookies)
 })
 
-router.post('/', (req, res) => {
+this.post('/', (req, res) => {
   const user = req.body
 
   res.cookie('NuestraCookie', JSON.stringify(user)).json({ message: 'Cookie creada' })
 })
+  }
+}
 
-module.exports = router
+module.exports = CookiesRouter

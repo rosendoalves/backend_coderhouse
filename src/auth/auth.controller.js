@@ -1,26 +1,28 @@
-const { Router } = require('express')
+const Route = require('../router/router')
 const passport = require('passport');
-const User = require('../dao/mongoClassManagers/models/User.model')
+// const User = require('../dao/mongoClassManagers/user/User.dao')
+const User = require('../repositories/user')
 // const { isValidPasswordMethod } = require('../utils/cryptPassword')
 
-const router = Router()
-
-router.post('/', passport.authenticate('login', {failureRedirect:'auth/faillogin'}), async (req, res) => {
+class AuthRouter extends Route {
+  init(){
+this.post('/', ['PUBLIC'], passport.authenticate('login', {failureRedirect:'auth/faillogin'}), async (req, res) => {
+  const { email } = req.body
+  
+  const user = await User.findOne({ email })
   try {
-    const { email } = req.body
 
-    const user = await User.findOne({ email })
-
-    // if (!user) return res.status(400).json({ error: 'Usuario no encontrado' })
+    if (!user) return res.status(400).json({ error: 'Usuario no encontrado' })
 
     // if (user.password !== password) return res.status(400).json({ error: 'El usuario y la contraseña no coinciden' })
     // if(!isValidPasswordMethod(password, user)) return res.status(403).send({status:"error", error:"La contraseña no es correcta"})
-    delete user.password
+    req.session.destroy
     req.session.user = {
-      first_name: user.first_name,
-      last_name: user.last_name,
-      email: user.email,
-      role: user.role
+      first_name: req.user.first_name,
+      last_name: req.user.last_name,
+      age: req.user.age,
+      email: req.user.email,
+      role: req.user.role
     }
     // res.status(201).json({ message: 'Sesión iniciada' })
     res.redirect('/products')
@@ -31,18 +33,20 @@ router.post('/', passport.authenticate('login', {failureRedirect:'auth/faillogin
   }
 })
 
-router.get('/faillogin', async(req,res) => {
+this.get('/faillogin', ['PUBLIC'], async(req,res) => {
   res.send({error:"Failed Login"})
 })
 
-router.get(
+this.get(
   '/github',
+  ['PUBLIC'],
   passport.authenticate('github', { scope: ['user:email'] }),
   async (req, res) => {}
 );
 
-router.get(
+this.get(
   '/githubcallback',
+  ['PUBLIC'],
   passport.authenticate('github', { failureRedirect: '/login' }),
   async (req, res) => {
     req.session.user = req.user;
@@ -50,11 +54,13 @@ router.get(
   }
 );
 
-router.get('/logout', (req, res) => {
+this.get('/logout', ['PUBLIC'], (req, res) => {
   req.session.destroy(error => {
     if (error) return res.json({ error })
     res.redirect('/login')
   })
 })
+  }
+}
 
-module.exports = router
+module.exports = AuthRouter

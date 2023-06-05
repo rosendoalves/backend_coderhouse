@@ -1,12 +1,12 @@
-const { Router } = require('express')
+const Route = require('../../router/router')
 const passport = require('passport');
 // const UserDao = require('../../dao/User.dao')
 // const User = new UserDao()
 // const {createHash} = require('../../utils/cryptPassword')
 
-const router = Router()
-
-router.post('/', passport.authenticate('register', {failureRedirect:'users/failRegister'}), async (req, res) => {
+class UsersRouter extends Route {
+  init(){
+this.post('/', ['PUBLIC'], passport.authenticate('register', {failureRedirect:'users/failRegister'}), async (req, res) => {
   try {
     // const { first_name, last_name, age, email, password } = req.body
 
@@ -36,8 +36,10 @@ router.post('/', passport.authenticate('register', {failureRedirect:'users/failR
   }
 })
 
-router.get('/failRegister', async(req,res) => {
+this.get('/failRegister', ['PUBLIC'], async(req,res) => {
   res.send({error:"Failed Register"})
 })
+  }
+}
 
-module.exports = router
+module.exports = UsersRouter

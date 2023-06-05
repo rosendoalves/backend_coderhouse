@@ -1,9 +1,10 @@
-const {Router} = require('express');
+const Route = require('../../router/router')
 const generateProducts = require('../../utils/mocks/productMock');
 
-const router = Router()
+class MockingProductsRouter extends Route {
+    init(){
 
-router.get('/', async (req, res) => {
+this.get('/',['PUBLIC'],  async (req, res) => {
     try {
         const {quantity} = req.params
         const products = generateProducts(quantity);
@@ -12,5 +13,7 @@ router.get('/', async (req, res) => {
         res.status(500).json({error: 'Internal server error'})
     }
 })
+    }
+}
 
-module.exports = router
+module.exports = MockingProductsRouter

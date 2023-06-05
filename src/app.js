@@ -10,6 +10,7 @@ const http = require('http')
 const { port } = require('../src/config')
 const passport = require('passport')
 const initializePassport = require('./config/passport.config')
+const session = require("express-session");
 const errorHandler = require('./middlewares/errors/handler.errors')
 const loggerMiddleware = require('./middlewares/logger.middlewares.js')
 
@@ -46,8 +47,14 @@ app.set('views', __dirname +'/views')
 app.set('view engine', 'handlebars')
 
 app.use(cookieParser('LoQueQuieras'))
+app.use(session({
+    secret: 'tu_secreto',
+    resave: false,
+    saveUninitialized: false,
+  }));
 initializePassport()
 app.use(passport.initialize())
+app.use(passport.session());
 
 app.use(errorHandler)
 app.use(loggerMiddleware)

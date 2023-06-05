@@ -2,9 +2,19 @@ const User = require("../models/User.model")
 
 class ProductDao {
 
-  async findOne(id) {
+  async findOne(email) {
     try {
-      const user = await User.findOne({_id: id})
+      const user = await User.findOne(email)
+      return user
+    } catch (error) {
+      return error
+    }
+    
+  }
+
+  async findById(id) {
+    try {
+      const user = await User.findById({_id: id})
       return user
     } catch (error) {
       return error

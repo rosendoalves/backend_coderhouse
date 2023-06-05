@@ -1,21 +1,21 @@
-const { Router } = require('express')
+const Route = require('../../router/router')
 const MessageDao = require('../../dao/mongoClassManagers/message/Message.dao')
 const Message = new MessageDao()
 
 
-const router = Router()
+class MessagesRouter extends Route {
+  init(){
 
-
-router.get('/chat', async(req, res) => {
+this.get('/chat', ['PUBLIC'], async(req, res) => {
   const messages = await Message.find()
   res.send(messages)
 })
 
-router.get('/', async(req, res) => {
+this.get('/', ['PUBLIC'], async(req, res) => {
   res.render('chat.handlebars', { style: 'styles.css' })
 })
 
-router.post('/', async(req, res) => {
+this.post('/', ['PUBLIC'], async(req, res) => {
   const form = req.body
   const message = await Message.create(form) 
   const messages = await Message.find()
@@ -24,9 +24,11 @@ router.post('/', async(req, res) => {
 })
 
 
-router.delete('/', async(req, res) => {
+this.delete('/', ['PUBLIC'], async(req, res) => {
   const message = await Message.deleteMany()  
     res.send(message)
 })
+}
+}
 
-module.exports = router
+module.exports = MessagesRouter

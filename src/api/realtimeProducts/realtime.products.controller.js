@@ -1,9 +1,14 @@
-const { Router } = require('express')
+const Route = require('../../router/router')
 
-const router = Router()
-
-router.get('/', (req, res) => {
+class RealTimeProductsRouter extends Route {
+  init() {
+  
+  
+this.get('/', ['PUBLIC'], (req, res) => {
   res.render('realTimeProducts.handlebars', {})
 })
 
-module.exports = router
+  }
+}
+
+module.exports = RealTimeProductsRouter
