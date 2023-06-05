@@ -1,4 +1,4 @@
-const Cart = require("./models/Cart.model")
+const Cart = require("../mongoClassManagers/models/Cart.model")
 
 class CartDao {
   async find() {

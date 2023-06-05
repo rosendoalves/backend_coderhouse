@@ -1,6 +1,6 @@
 const passport = require('passport')
 const local = require('passport-local')
-const User = require('../dao/models/User.model')
+const User = require('../dao/mongoClassManagers/models/User.model')
 const GitHubStrategy = require('passport-github2');
 const { createHash, isValidPasswordMethod } = require('../utils/cryptPassword')
 const { clientID_github, clientSecret_github } = require('./githubAuth.config');

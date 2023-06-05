@@ -1,4 +1,4 @@
-const Product = require("./models/Product.model")
+const Product = require("../models/Product.model")
 
 class ProductDao {
   async find(limit, page, sort, field, query) {

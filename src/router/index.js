@@ -1,6 +1,6 @@
 const productsController = require('../api/products/products.controller')
 const cartsController = require('../api/carts/carts.controller')
-const homeController = require('../api/home/home.controller')
+// const homeController = require('../api/home/home.controller')
 const realtimeProductsController = require('../api/realtimeProducts/realtime.products.controller')
 const messagesController = require('../api/messages/messages.controller')
 const usersController = require('../api/users/users.controller')

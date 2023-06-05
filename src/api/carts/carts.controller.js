@@ -1,10 +1,10 @@
 const {Router} = require('express')
-const CartDao = require('../../dao/Cart.dao')
+const CartDao = require('../../dao/mongoClassManagers/cart/Cart.dao')
 const Cart = new CartDao()
-const CartManager =  require('../../class/CartManager')
+// const CartManager =  require('../../class/CartManager')
 const router = Router()
 
-const manager = new CartManager()
+// const manager = new CartManager()
 
 router.get('/', async(req, res) => {
     const {limit} = req.query
@@ -61,7 +61,7 @@ router.delete('/:cid/products/:pid', async(req, res) => {
 })
 
 router.delete('/', async(req, res) => {
-    const id = req.params.pid
+    // const id = req.params.pid
     const cart = await Cart.deleteMany()  
     res.send(cart)
 })

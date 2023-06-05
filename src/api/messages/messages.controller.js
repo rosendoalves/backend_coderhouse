@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const MessageDao = require('../../dao/Message.dao')
+const MessageDao = require('../../dao/mongoClassManagers/message/Message.dao')
 const Message = new MessageDao()
 
 

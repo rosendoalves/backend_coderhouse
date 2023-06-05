@@ -1,6 +1,6 @@
 const {Router} = require('express')
-const ProductDao = require('../../dao/Product.dao')
-const Product = new ProductDao()
+// const ProductDao = require('../../dao/mongoClassManagers/product/Product.dao')
+const Product = require('../../repositories')
 // const ProductManager =  require('../../class/ProductManager')
 const productError = require('../../utils/errors/product/product.error')
 const router = Router()
@@ -36,8 +36,8 @@ router.get('/:pid', async (req, res) => {
 router.post('/', async(req, res) => {
     try {
         const form = req.body
-        const {title, description, price, thumbnail, code, stock, category} = req.body
-        if(!title || !description || !price || !thumbnail || !code || !stock || !category){
+        const {title, description, price, code, stock, category} = req.body
+        if(!title || !description || !price || !code || !stock || !category){
             productError(form);
         }
         const product = await Product.create(form) 

@@ -1,4 +1,4 @@
-const Message = require("./models/Message.model")
+const Message = require("../models/Message.model")
 
 class MessageDao {
 

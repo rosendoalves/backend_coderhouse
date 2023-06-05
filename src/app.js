@@ -5,13 +5,9 @@ const Handlebars = require('handlebars');
 // const {Server} = require('socket.io')
 const router = require('./router/index.js')
 const cookieParser = require('cookie-parser')
-const session = require('express-session')
 // const FileStore = require('session-file-store')
-const MongoStore = require('connect-mongo')
-const mongoose = require('mongoose')
 const http = require('http')
-const { db, port } = require('../src/config')
-const { userDb, passDb, msPass } = db
+const { port } = require('../src/config')
 const passport = require('passport')
 const initializePassport = require('./config/passport.config')
 const errorHandler = require('./middlewares/errors/handler.errors')
@@ -52,30 +48,12 @@ app.set('view engine', 'handlebars')
 app.use(cookieParser('LoQueQuieras'))
 initializePassport()
 app.use(passport.initialize())
-app.use(session({
-  // store: new fileStorage({ path: __dirname + '/sessions', ttl: 100, retries: 0 }),
-  store: MongoStore.create({
-    mongoUrl:`mongodb+srv://${userDb}:${passDb}@cluster0.zygdc.mongodb.net/session?retryWrites=true&w=majority`,
-    mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-  }),
-  secret: msPass,
-  resave: false,
-  saveUninitialized: false
-}))
 
 app.use(errorHandler)
 app.use(loggerMiddleware)
 app.use(cors())
 
 router(app)
-mongoose.set('strictQuery', false)
-mongoose.connect(`mongodb+srv://${userDb}:${passDb}@cluster0.zygdc.mongodb.net/ecommerce?retryWrites=true&w=majority`, error => {
-    if(error) { 
-        console.log(`Error: ${error}`)
-    } else {
-        console.log('Database is connected')
-    }
-})
 
 
 

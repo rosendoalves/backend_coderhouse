@@ -1,16 +1,16 @@
 const { Router } = require('express')
-const { publicAccess } = require('../middlewares')
-const ProductDao = require('../dao/Product.dao')
+const { publicAccess, privateAccess } = require('../middlewares')
+const ProductDao = require('../dao/mongoClassManagers/product/Product.dao')
 const ProductManager = new ProductDao()
-const CartDao = require('../dao/Cart.dao')
+const CartDao = require('../dao/mongoClassManagers/cart/Cart.dao')
 const CartManager = new CartDao()
 
 const router = Router()
 
-// router.get('/', privateAccess, (req, res) => {
-//   const { user } = req.session
-//   res.render('profile.handlebars', { user })
-// })
+router.get('/', privateAccess, (req, res) => {
+  const { user } = req.session
+  res.render('profile.handlebars', { user })
+})
 
 router.get('/login', publicAccess, (req, res) => {
   res.render('login.handlebars')

@@ -1,13 +1,13 @@
 [
 	{
-		"id": 4,
-		"title": "producto de prueba",
-		"description": "descripción del producto de prueba",
-		"price": 600,
+		"id": 1,
+		"title": "producto actualizado",
+		"description": "descripción del producto actualizado",
+		"price": 400,
 		"thumbnail": "",
-		"code": "AED796",
-		"stock": 10,
-		"status": true,
-		"category": "Categoría 1"
+		"code": "ABC127",
+		"stock": 20,
+		"status": false,
+		"category": "Categoría 2"
 	}
 ]

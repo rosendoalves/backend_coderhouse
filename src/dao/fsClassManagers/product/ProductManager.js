@@ -3,11 +3,11 @@ const fs =  require('fs')
 class ProductManager {
   #id = 0
   constructor() {
-    this.path = './src/files/products.json'
+    // this.path = './src/files/products.json'
+    this.path = `${process.cwd()}/src/files/products.json`
 }
 
-
-  async getProducts() {
+  async find() {
     try {
       if (fs.existsSync(this.path)) {
         const data = await fs.promises.readFile(this.path, 'utf-8')
@@ -21,7 +21,7 @@ class ProductManager {
     }
   }
 
-  async getProductById(id) {
+  async findOne(id) {
     try {
       if (fs.existsSync(this.path)) {
         const data = await fs.promises.readFile(this.path, 'utf-8')
@@ -38,17 +38,17 @@ class ProductManager {
     }
   }
 
-  async updateProduct(id, updatedProduct) {
+  async updateOne(id, newProduct) {
 
-    const {title, description, price, thumbnail, code, stock, status, category} = updatedProduct
+    const {title, description, price, thumbnail, code, stock, status, category} = newProduct
     
     try {
       if (fs.existsSync(this.path)) {
         const data = await fs.promises.readFile(this.path, 'utf-8')
         const products = JSON.parse(data)
-        if(title && description && price && code && stock && status && category ) {
+        if(title && description && price && code && stock && category ) {
           const product = {
-              id: id,
+              id: Number(id),
               title: title,
               description: description,
               price: price,
@@ -76,7 +76,7 @@ class ProductManager {
     }
   }
 
-  async deleteProduct(id) {
+  async deleteOne(id) {
     try {
       if (fs.existsSync(this.path)) {
         const data = await fs.promises.readFile(this.path, 'utf-8')
@@ -89,13 +89,24 @@ class ProductManager {
       console.log(error)
     }
   }
+  async deleteMany() {
+    try {
+      if (fs.existsSync(this.path)) {
+        const products = []
+          await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'))
+          return `All products deleted`
+    }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
-  async addProduct(product) {
+  async create(newProduct) {
 
-    const {title, description, price, thumbnail, code, stock, status, category} = product
+    const {title, description, price, thumbnail, code, stock, status, category} = newProduct
 
     try {
-      const products = await this.getProducts()
+      const products = await this.find()
       if (products.length === 0) {
         this.#id = 1
       } else {

@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const passport = require('passport');
-const User = require('../dao/models/User.model')
+const User = require('../dao/mongoClassManagers/models/User.model')
 // const { isValidPasswordMethod } = require('../utils/cryptPassword')
 
 const router = Router()
