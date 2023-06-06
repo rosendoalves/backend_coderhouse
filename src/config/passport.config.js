@@ -15,7 +15,6 @@ const initializePassport = () => {
         new LocalStrategy(
           { passReqToCallback: true, usernameField: 'email' },
           async (req, username, password, done) => {
-            console.log("🚀 ~ file: passport.config.js:18 ~ password:", password)
             const { first_name, last_name, age, email } = req.body
             let role = false
             try {

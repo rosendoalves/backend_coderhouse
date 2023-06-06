@@ -2,6 +2,13 @@ const Route = require('../../router/router')
 const CartDao = require('../../dao/mongoClassManagers/cart/Cart.dao')
 const Cart = new CartDao()
 // const CartManager =  require('../../class/CartManager')
+const ProductDao = require('../../dao/mongoClassManagers/product/Product.dao')
+// const Product = require('../../repositories/product')
+const Product = new ProductDao()
+const { ObjectId } = require('mongodb');
+const User = require('../../repositories/user')
+const {v4: uuidv4} = require('uuid')
+const ticketsModel = require('../../dao/mongoClassManagers/models/Ticket.model');
 class CartsRouter extends Route {
 init() {
 
@@ -29,6 +36,68 @@ this.get('/:cid', ['PUBLIC'], async (req, res) => {
         res.send('Not found')
     }
 })
+
+this.post('/:cid/purchase', ['USER'], async (req, res) => {
+    try {
+      const { cid } = req.params;
+      const cart = await Cart.findOne(cid);
+      const currentUser = await User.findOne(req.session.user.email);
+  
+      if (!cart) {
+        return res.status(404).send('Cart not found');
+      }
+  
+      if (!currentUser) {
+        return res.status(401).send('User not found');
+      }
+  
+      const productsCart = cart.products;
+      const products = await Product.find();
+      console.log("🚀 ~ file: carts.controller.js:55 ~ CartsRouter ~ this.post ~ products:", products.payload)
+      let productsAvailable = [];
+      let productsUnavailable = [];
+      
+      if (productsCart.length === 0) {
+        return res.status(400).send('No hay productos en el carrito');
+      }
+  
+      if (products.length === 0) {
+        return res.status(400).send('No hay productos cargados');
+      }
+  
+      for (const item of productsCart) {
+        const product = products.payload.find((p) => p._id.equals(ObjectId(item.product._id)));
+        if (product && item.quantity <= product.stock) {
+          productsAvailable.push(item);
+          const newProduct = await Product.findOne(product._id)
+          newProduct.stock = product.stock - item.quantity;
+          await Product.updateOne({_id: product._id}, newProduct);
+          await Cart.deleteOnes(cid, product._id)
+        } else {
+            productsUnavailable.push(item);
+        }
+    }
+    
+    const newTicketInfo = {
+        code: uuidv4(),
+        purchase_datatime: new Date().toLocaleString(),
+        amount: productsAvailable.reduce((acc, curr) => acc + curr.product.price * curr.quantity, 0),
+        purchaser: currentUser.email
+    };
+  
+    const newTicket = await ticketsModel.create(newTicketInfo);
+    const response = {
+        message: 'Compra realizada exitosamente',
+        ticket: newTicket,
+        productsUnavailable: productsUnavailable
+      };
+      return res.send(response);
+} catch (error) {
+    console.error(error);
+      return res.status(500).send('Internal Server Error');
+    }
+  });
+  
 
 this.post('/', ['PUBLIC'], async(req, res) => {
     const form = req.body
