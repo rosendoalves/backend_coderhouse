@@ -4,6 +4,10 @@ const ProductDao = require('../dao/mongoClassManagers/product/Product.dao')
 const ProductManager = new ProductDao()
 const CartDao = require('../dao/mongoClassManagers/cart/Cart.dao')
 const CartManager = new CartDao()
+const transport = require('../utils/email.utils')
+const User = require('../repositories/user')
+const { emailUser } = require('../config/email.config')
+const { isValidPasswordMethod, createHash } = require('../utils/cryptPassword')
 
 class ViewsTemplateRouter extends Route {
   init() {
@@ -71,6 +75,94 @@ catch (error) {
     res.send(`something went wrong ${error}`)
 }
 })
+
+this.post('/reset-password', ['PUBLIC'], async(req,res) => {
+  try {
+    const { to } = req.body
+    const expirationTime = new Date().getTime() + 3600000; 
+    let linkMold = req.protocol + '://' + req.get('host');
+    const url = linkMold + `/recovery/${expirationTime}`;
+    const recoveryUrl = url.split('/recovery/')[0] + '/recovery/' + url.split('/recovery/')[1];
+    const email = {email: req.body.to}
+    // req.session.destroy
+    req.session.expirationTime = expirationTime;
+    req.session.email = email
+    const mailOptions = {
+      from: emailUser,
+      to,
+      subject: "Password recovery",
+      html: `
+        <div>
+          <h1>  
+            Continúa al siguiente enlace para restablecer tu contraseña:
+          </h1>
+          <a>${recoveryUrl}</a>
+        </div>
+      `,
+      attachments: [],
+    }
+
+    await transport.sendMail(mailOptions)
+    res.redirect('/login')
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+this.get('/recovery', ['PUBLIC'], publicAccess, (req, res) => {
+      res.render('recovery.handlebars')
+    
+})
+this.get('/recovery/:id', ['PUBLIC'], publicAccess, (req, res) => {
+  try {
+    const id = req.params.id
+    const currentTimestamp = new Date().getTime();
+    if (req.session.expirationTime && (currentTimestamp < req.session.expirationTime)) {
+      res.status(200).redirect(`/reset-password/${id}`)
+    } else {
+      res.redirect(`/login`)
+    }
+  } catch (error) {
+    res.send(`something went wrong ${error}`)
+    
+  }
+})
+
+this.get('/reset-password/:id', ['PUBLIC'], (req, res) => {
+  try {
+    const id = req.params.id
+    if(id) {
+      res.status(200).render('forgetPassword');
+    } else {
+      render('login');
+    }
+}
+catch (error) {
+    res.sendServerError(`something went wrong ${error}`)
+}
+})
+
+this.post('/password-update', ['PUBLIC'], async (req, res) => {
+  try {
+    const pw1 = req.body.newPassword1;
+    const pw2 = req.body.newPassword2;
+    const email = req.session.email;
+    const user = await User.findOne(email);
+    if (pw1 === pw2) {
+      if (isValidPasswordMethod(pw1, user)) {
+        res.json({ status: 'error', message: 'Contraseña ya utilizada, elija una distinta' });
+      } else {
+        await User.updateOne(user._id, { password: createHash(pw1) });
+        res.json({ status: 'success', message: 'Contraseña actualizada, vuelva a loguearse' });
+      }
+    } else {
+      res.json({ status: 'error', message: 'Contraseñas no coinciden.' });
+    }
+  } catch (error) {
+    res.json({ status: 'error', message: `something went wrong ${error}` });
+  }
+});
+
   }
 }
 
