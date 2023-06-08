@@ -84,8 +84,8 @@ class Route {
         }
       }
   
-      if (req.session.user.role !== "ADMIN" && req.session.user.role !== "PREMIUM") {
-        return next();
+      if (!policies.includes(req.session.user.role)) {
+        return res.status(403).send('Access denied');
       }
   
       next();

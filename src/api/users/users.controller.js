@@ -26,7 +26,6 @@ this.put('/premium/:uid', ['ADMIN'], async (req, res) => {
         role: user.role === 'ADMIN' ? 'PREMIUM' : 'ADMIN'
       };
       const userUpdate = await User.updateOne({_id: uid}, update)
-      console.log("🚀 ~ file: users.controller.js:26 ~ UsersRouter ~ this.put ~ userUpdate:", userUpdate)
       return res.send(`Rol cambiado a ${user.role == 'ADMIN' ? 'PREMIUM' : 'ADMIN'}`)
     } else {
       res.send('No se puede actualizar porque no se encuentra el usuario')
