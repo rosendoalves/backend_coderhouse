@@ -36,9 +36,10 @@ class ProductsRouter extends Route {
             }
         })
         
-        this.post('/', ['ADMIN'], async(req, res) => {
+        this.post('/', ['ADMIN', 'PREMIUM'], async(req, res) => {
             try {
                 const form = req.body
+                form.owner = req.user.email
                 const {title, description, price, code, stock, category} = req.body
                 if(!title || !description || !price || !code || !stock || !category){
                     productError(form);
@@ -68,13 +69,22 @@ class ProductsRouter extends Route {
             }
         })
         
-        this.delete('/:pid', ['ADMIN'], async(req, res) => {
+        this.delete('/:pid', ['ADMIN, PREMIUM'], async(req, res) => {
             try {
                 const id = req.params.pid
-                const product = await Product.deleteOne(id)  
+                const product = await Product.findOne(id) 
+                if(product.owner == req.user.email) {
+                    const product = await Product.deleteOne(id)
+                    res.send(product)
+                } else if(req.user.role == 'ADMIN') {
+                    const product = await Product.deleteOne(id)
+                    res.send(product)
+                } else {
+                    res.send('Not authorized')
+                }
                 const products = await Product.find()
                 global.io.emit("newProducts", products);
-                res.send(product)
+                return 'Producto eliminado'
                 
             } catch (error) {
                 req.logger.error('Sin resultado')

@@ -15,8 +15,8 @@ const initializePassport = () => {
         new LocalStrategy(
           { passReqToCallback: true, usernameField: 'email' },
           async (req, username, password, done) => {
-            const { first_name, last_name, age, email } = req.body
-            let role = false
+            const { first_name, last_name, age, email, role } = req.body
+            let admin = false
             try {
               const user = await User.findOne({ email: username });
 
@@ -30,7 +30,7 @@ const initializePassport = () => {
               }
 
               if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
-                role = true
+                admin = true
               } 
     
               const newUserInfo = {
@@ -39,7 +39,7 @@ const initializePassport = () => {
                 email,
                 age,
                 password,
-                role: role ? 'ADMIN' : 'USER'
+                role: admin ? 'ADMIN' : role
               };
               const newUser = await User.create(newUserInfo);
               return done(null, newUser);

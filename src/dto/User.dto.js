@@ -11,6 +11,7 @@ class UserDTO{
         this.password = createHash(user.password);
         this.cart = user.cart;
         this.role = user.role;
+        this.owner = user.owner
     }
 }
 

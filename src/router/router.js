@@ -22,6 +22,7 @@ class Route {
   }
 
   post(path, policies, ...callbacks) {
+    console.log("🚀 ~ file: router.js:25 ~ Route ~ post ~ policies:", policies)
     this.router.post(
       path,
       this.handlePolicies(policies),
@@ -74,21 +75,17 @@ class Route {
       }
   
       if (!req.session.user) {
-        // return res.status(200).redirect("/login")
-          // Verificar si es una solicitud desde un navegador web
-      const userAgent = req.headers['user-agent'];
-      const isWebBrowser = /Mozilla|Chrome|Safari|Opera|Firefox/.test(userAgent);
-
-      if (isWebBrowser) {
-        return res.status(200).redirect("/login");
-      } else {
-        // Si no es una solicitud desde un navegador web, simplemente envía un error
-        // return res.status(401).send("Unauthorized");
-        return next()
-      }
+        const userAgent = req.headers['user-agent'];
+        const isWebBrowser = /Mozilla|Chrome|Safari|Opera|Firefox/.test(userAgent);
+  
+        if (isWebBrowser) {
+          return res.status(200).redirect("/login");
+        } else {
+          return next();
+        }
       }
   
-      if (req.session.user.role !== "ADMIN") {
+      if (req.session.user.role !== "ADMIN" && req.session.user.role !== "PREMIUM") {
         return next();
       }
   

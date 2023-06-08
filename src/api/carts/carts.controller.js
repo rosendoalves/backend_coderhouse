@@ -53,7 +53,6 @@ this.post('/:cid/purchase', ['USER'], async (req, res) => {
   
       const productsCart = cart.products;
       const products = await Product.find();
-      console.log("🚀 ~ file: carts.controller.js:55 ~ CartsRouter ~ this.post ~ products:", products.payload)
       let productsAvailable = [];
       let productsUnavailable = [];
       
@@ -99,13 +98,13 @@ this.post('/:cid/purchase', ['USER'], async (req, res) => {
   });
   
 
-this.post('/', ['PUBLIC'], async(req, res) => {
+this.post('/', ['PUBLIC', 'PREMIUM'], async(req, res) => {
     const form = req.body
     const cart = await Cart.create(form)  
     res.send(cart)
 })
 
-this.put('/:cid/products/:pid', ['PUBLIC'], async(req, res) => {
+this.put('/:cid/products/:pid', ['PUBLIC', 'PREMIUM'], async(req, res) => {
     const {cid, pid} = req.params
     const form = req.body
     const cart = await Cart.updateOne(cid, pid, form)  
