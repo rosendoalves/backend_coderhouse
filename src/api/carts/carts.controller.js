@@ -100,6 +100,16 @@ this.post('/:cid/purchase', ['USER'], async (req, res) => {
 
 this.post('/', ['PUBLIC', 'PREMIUM'], async(req, res) => {
     const form = req.body
+    const products = await Product.find()
+    let foundProduct = false
+    if(req.user.role == 'PREMIUM') {
+      form.products.map(item => {
+        if(products.payload.some(i => i._id.toString() === item.product && i.owner === req.user.email)) return foundProduct = true
+      })
+    }
+    if(foundProduct) {
+      return res.send('No puedes agregar tus propios productos')
+    }
     const cart = await Cart.create(form)  
     res.send(cart)
 })
@@ -107,6 +117,16 @@ this.post('/', ['PUBLIC', 'PREMIUM'], async(req, res) => {
 this.put('/:cid/products/:pid', ['PUBLIC', 'PREMIUM'], async(req, res) => {
     const {cid, pid} = req.params
     const form = req.body
+    const products = await Product.find()
+    let foundProduct = false
+    if(req.user.role == 'PREMIUM') {
+      form.products.map(item => {
+        if(products.payload.some(i => i._id.toString() === item.product && i.owner === req.user.email)) return foundProduct = true
+      })
+    }
+    if(foundProduct) {
+      return res.send('No puedes agregar tus propios productos')
+    }
     const cart = await Cart.updateOne(cid, pid, form)  
     res.send(cart)
 })

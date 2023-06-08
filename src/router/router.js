@@ -22,7 +22,6 @@ class Route {
   }
 
   post(path, policies, ...callbacks) {
-    console.log("🚀 ~ file: router.js:25 ~ Route ~ post ~ policies:", policies)
     this.router.post(
       path,
       this.handlePolicies(policies),

@@ -1,5 +1,6 @@
 const Route = require('../../router/router')
 const passport = require('passport');
+const User = require('../../repositories/user')
 // const UserDao = require('../../dao/User.dao')
 // const User = new UserDao()
 // const {createHash} = require('../../utils/cryptPassword')
@@ -8,31 +9,30 @@ class UsersRouter extends Route {
   init(){
 this.post('/', ['PUBLIC'], passport.authenticate('register', {failureRedirect:'users/failRegister'}), async (req, res) => {
   try {
-    // const { first_name, last_name, age, email, password } = req.body
-
-    // let role = false
-   
-  // if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
-  //   role = true
-  // } 
-
-    // const newUserInfo = {
-    //   first_name,
-    //   last_name,
-    //   age,
-    //   email,
-    //   password: createHash(password),
-    //   role: role ? 'admin' : 'user'
-    // }
-
-    // const newUser = await User.create(newUserInfo)
-    // if (newUser.code === 11000) return res.status(400).json({ error: 'El usuario ya existe' })
-    // res.status(201).json({ message: newUser })
     res.redirect('/login')
   } catch (error) {
     // console.log(error)
     if (newUser.code === 11000) return res.status(400).json({ error: 'El usuario ya existe' })
     res.status(500).json({ error: 'Internal server error' })
+  }
+})
+
+this.put('/premium/:uid', ['ADMIN'], async (req, res) => {
+  try {
+    const {uid} = req.params
+    const user = await User.findById(uid)
+    if(user) {
+      const update = {
+        role: user.role === 'ADMIN' ? 'PREMIUM' : 'ADMIN'
+      };
+      const userUpdate = await User.updateOne({_id: uid}, update)
+      console.log("🚀 ~ file: users.controller.js:26 ~ UsersRouter ~ this.put ~ userUpdate:", userUpdate)
+      return res.send(`Rol cambiado a ${user.role == 'ADMIN' ? 'PREMIUM' : 'ADMIN'}`)
+    } else {
+      res.send('No se puede actualizar porque no se encuentra el usuario')
+    }
+  } catch (error) {
+    res.send(`Something went wrong: ${error}`)
   }
 })
 

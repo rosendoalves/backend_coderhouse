@@ -33,8 +33,8 @@ class ProductDao {
 
   async updateOne(id, newUser) {
     try {
-      const user = User.findOne(id)
-      const response = await User.updateOne(user, newUser)
+      // const user = User.findOne(id)
+      const response = await User.updateOne({_id: id}, {$set: { newUser }})
       return response
     } catch (error) {
       return error

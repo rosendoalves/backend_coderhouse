@@ -18,7 +18,7 @@ class ProductsRouter extends Route {
                 res.send(products)
                 
             } catch (error) {
-                req.logger.fatal("Poductos no encontrados")
+                req.logger.fatal("Productos no encontrados")
             }
         })
         
