@@ -258,14 +258,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/products/647d28910aff49bda67b240b",
+							"raw": "{{url}}/api/products/64814515326ad079ad748822",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"products",
-								"647d28910aff49bda67b240b"
+								"64814515326ad079ad748822"
 							]
 						}
 					},
@@ -493,7 +493,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"products\": [\r\n     {\r\n        \"product\": \"646a4abe9ccee51ad1747e23\",\r\n        \"quantity\": 10\r\n    },\r\n    {\r\n        \"product\": \"647d28910aff49bda67b240b\",\r\n        \"quantity\": 30\r\n    }\r\n]}",
+							"raw": "{ \"products\": [\r\n    {\r\n        \"product\": \"64814515326ad079ad748822\",\r\n        \"quantity\": 30\r\n    }\r\n]}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -549,7 +549,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "[\r\n     {\r\n        \"product\": \"647ea4a2a105b89f59d77b28\",\r\n        \"quantity\": 10\r\n    },\r\n    {\r\n        \"product\": \"647d28910aff49bda67b240b\",\r\n        \"quantity\": 30\r\n    }\r\n]",
+							"raw": "[\r\n      {\r\n        \"product\": \"64814515326ad079ad748822\",\r\n        \"quantity\": 10\r\n    }\r\n    // {\r\n    //     \"product\": \"64814bc9754cfb53a23fefe6\",\r\n    //     \"quantity\": 30\r\n    // }\r\n]",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -557,14 +557,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/carts/647e99f77a5ef97861f853b6",
+							"raw": "{{url}}/api/carts/648157e6c588ffc9285a51d6",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"carts",
-								"647e99f77a5ef97861f853b6"
+								"648157e6c588ffc9285a51d6"
 							]
 						}
 					},
@@ -697,7 +697,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"first_name\": \"Rosendo\",\r\n    \"last_name\": \"Alves\",\r\n    \"age\": 31,\r\n    \"email\": \"rosendoalves05@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"first_name\": \"Rosendo\",\r\n    \"last_name\": \"Alves\",\r\n    \"age\": 31,\r\n    \"email\": \"rosendoalves055@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -711,6 +711,87 @@
 							],
 							"path": [
 								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save files",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profile",
+									"type": "file",
+									"src": "/C:/Users/Rosendo/Downloads/product.jpeg"
+								},
+								{
+									"key": "account",
+									"type": "file",
+									"src": "/C:/Users/Rosendo/Downloads/account.jpeg"
+								},
+								{
+									"key": "address",
+									"type": "file",
+									"src": [
+										"/C:/Users/Rosendo/Downloads/account.jpeg",
+										"/C:/Users/Rosendo/Downloads/address.jpeg",
+										"/C:/Users/Rosendo/Downloads/document.jpeg"
+									]
+								},
+								{
+									"key": "document",
+									"type": "file",
+									"src": "/C:/Users/Rosendo/Downloads/account.jpeg"
+								},
+								{
+									"key": "product",
+									"type": "file",
+									"src": "/C:/Users/Rosendo/Downloads/account.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/users/64814130670b1b7a02b6386c/documents",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"64814130670b1b7a02b6386c",
+								"documents"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cambio de Rol",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users/premium/648495eb920ccffa35f1fc95",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"premium",
+								"648495eb920ccffa35f1fc95"
 							]
 						}
 					},
@@ -767,6 +848,58 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Create user premium",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"Rosendo\",\r\n    \"last_name\": \"Alves\",\r\n    \"age\": 31,\r\n    \"email\": \"rosendo2@coder.com\",\r\n    \"password\": \"123456\",\r\n    \"role\": \"PREMIUM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recovery Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"to\": \"rosendoalves05@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/reset-password",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reset-password"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -780,7 +913,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"rosendoalves05@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"email\": \"rosendoalves055@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -800,6 +933,33 @@
 					"response": []
 				},
 				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"rosendoalves05@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth/logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Login Admin",
 					"request": {
 						"method": "POST",
@@ -807,6 +967,32 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"email\": \"adminCoder@coder.com\",\r\n    \"password\": \"adminCod3r123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Premium",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"rosendo@coder.com\",\r\n    // \"email\": \"rosendo2@coder.com\",\r\n    \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
