@@ -24,6 +24,8 @@ this.post('/', ['PUBLIC'], passport.authenticate('login', {failureRedirect:'auth
       email: req.user.email,
       role: req.user.role
     }
+    const currentDate = new Date();
+    await User.updateOne({ _id: req.user._id }, {last_connection: currentDate});
     // res.status(201).json({ message: 'Sesión iniciada' })
     res.redirect('/products')
   } catch (error) {
@@ -54,7 +56,9 @@ this.get(
   }
 );
 
-this.get('/logout', ['PUBLIC'], (req, res) => {
+this.post('/logout', ['PUBLIC'], async(req, res) => {
+  const currentDate = new Date();
+  await User.updateOne({ _id: req.user._id }, {last_connection: currentDate});
   req.session.destroy(error => {
     if (error) return res.json({ error })
     res.redirect('/login')

@@ -20,6 +20,16 @@ const userSchema = new mongoose.Schema({
     enum: ['USER', 'ADMIN', 'PREMIUM'],
     default: 'USER',
   },
+  documents: {
+    type: [
+      {
+        name: String,
+        reference: String,
+      }
+    ],
+    default: [],
+  },
+  last_connection: Date,
 
 })
 
