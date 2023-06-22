@@ -4,7 +4,7 @@
   "description": "backend_entrega2",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test/supertest.test.js",
     "start:dev": "nodemon src/app.js",
     "start": "node src/app.js"
   },
@@ -47,6 +47,9 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
-    "eslint": "^8.41.0"
+    "chai": "^4.3.7",
+    "eslint": "^8.41.0",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }
