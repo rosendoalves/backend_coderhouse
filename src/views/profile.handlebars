@@ -1,17 +1,27 @@
-<h2>Profile</h2>
+  <h2 class="h2-center">Profile</h2>
+<div class="container">
 
-<label for="">Nombre</label>
-<p>{{user.first_name}}</p>
-<br>
+  <div class="profile-info">
+    <label class="form-label" for="">Nombre</label>
+    <p class="profile-value">{{user.first_name}}</p>
+  </div>
 
-<label for="">Apellido</label>
-<p>{{user.last_name}}</p>
-<br>
+  <div class="profile-info">
+    <label class="form-label" for="">Apellido</label>
+    <p class="profile-value">{{user.last_name}}</p>
+  </div>
 
-<label for="">Correo</label>
-<p>{{user.email}}</p>
-<br>
-<label for="">Rol</label>
-<p>{{user.rol}}</p>
-<br>
-<h1><a href="/products">Volver</a></h1>
+  <div class="profile-info">
+    <label class="form-label" for="">Correo</label>
+    <p class="profile-value">{{user.email}}</p>
+  </div>
+
+  <div class="profile-info">
+    <label class="form-label" for="">Rol</label>
+    <p class="profile-value">{{user.role}}</p>
+  </div>
+
+    <div  class="login">
+   <a href="/products"> <button type="button">Volver</button></a>
+    </div>
+</div>

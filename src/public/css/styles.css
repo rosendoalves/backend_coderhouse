@@ -1,5 +1,206 @@
+/* Estilos generales */
 body {
-  background-color: rgb(109, 76, 209);
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="email"],
+input[type="text"],
+input[type="number"],
+input[type="password"] {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
+
+}
+
+button {
+  padding: 10px 20px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+a button {
+  background-color: #eee;
+  color: #333;
+  width: 100%;
+}
+
+a button:hover {
+  background-color: #ccc;
+}
+
+.login {
+  flex: 1;
+  margin-bottom: 10px;
+}
+.github {
+  flex: 1;
+  margin-bottom: 10px;
+}
+
+.login-buttons .login button {
+  background-color: #28a745;
+}
+
+.login-buttons .login button:hover {
+  background-color: #218838;
+}
+
+.login-buttons .login a:visited {
+text-decoration: none;
+}
+
+.login-buttons .github button {
+  background-color: #2e2f36;
+  color: whitesmoke;
+}
+
+.login-buttons .github button:hover {
+  background-color: whitesmoke;
   color: black;
+}
+.login-buttons .github button:visited {
+  text-decoration: none;
+  color: whitesmoke
+}
+.login-buttons .back button {
+  background-color: #ffd966;
+}
+
+.login-buttons .back button:hover {
+  background-color: #f7c52d;
+}
+.login-buttons .github button:visited {
+  text-decoration: none;
+}
+
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 10px 10px 0px 0px;
+}
+
+.header h1 {
+  font-size: 14px;
+  margin: 0;
+  margin-left: 10px;
+}
+
+.header a {
+  text-decoration: none;
+  color: #333;
+  margin-left: 10px;
+}
+
+.products-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin: 10px;
+  width: 200px;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.card .add-to-cart {
+  margin-top: 10px; /* Puedes ajustar el valor según el espaciado deseado */
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.title-shop {
+  display: flex;
+  flex-wrap: wrap;
   margin: 10px;
 }
+
+
+.profile-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.profile-info {
+  margin-bottom: 10px;
+}
+.profile-info p{
+  margin-top: 10px;
+}
+
+.profile-info label {
+
+  font-weight: bold;
+}
+
+.profile-value {
+  margin: 0;
+  font-weight: normal;
+}
+
+.back-link {
+  text-decoration: none;
+  color: blue;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+

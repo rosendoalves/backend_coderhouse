@@ -7,7 +7,7 @@ class SessionRouter extends Route {
       
       next()
     }
-    this.get('/current', privateRoute, (req, res) => {
+    this.get('/current', ['PUBLIC'], privateRoute, (req, res) => {
       const { user } = req.session
       res.render('profile.handlebars', {user})
     })

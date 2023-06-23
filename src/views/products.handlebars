@@ -1,26 +1,36 @@
 <div>
-{{#if user}}
-    <h1>Bienvenido {{user.first_name}} {{user.last_name}} - <a href="/auth/logout">Cerrar Sesión</a></h1>
-    <h1><a href="/session/current">Datos de Perfil</a></h1>
-    {{!-- <h1>Rol: {{user.role}}</h1> --}}
+<div class="header">
+  {{#if user}}
+    <h1>{{user.first_name}} {{user.last_name}}</h1>
+    <h1><a href="/session/current"><i class="fa-solid fa-user"></i> Perfil</a></h1>
+    <h1><a href="/carts/647b3b7913a444c39b2337bf"><i class="fa-solid fa-cart-shopping"></i> Carrito</a></h1>
+    <h1><a href="/auth/logout">Cerrar Sesión</a></h1>
   {{else}}
-    <h3>Login Error - <a href="/auth/logout">Volver</a></h1></h3>
+    <h3>Login Error - <a href="/auth/logout">Volver</a></h3>
   {{/if}}
-  <h1>Products</h1>
-  <div type="button"><a href="/carts/647b3b7913a444c39b2337bf">Go to Cart</a></div>
+</div>
+<div class="title-shop">
+  <h1>Bienvenido!</h1>
+  </div>
+ <div class="products-container">
   {{#if payload}}
     {{#each payload}}
       {{#with this}}
-        <div>
-          <h4>{{_id}} - Product: {{title}}</h4>
-          <p>Description: {{description}}</p>
-          <p>Price: {{price}}</p>
-          <p>Stock: {{stock}}</p>
-          <div type="button">Add to cart</div>
+        <div class="card">
+          {{!-- <h4>{{_id}} - Product: {{title}}</h4> --}}
+          <img src={{thumbnail}}>
+          <h4>{{title}}</h4>
+          <p>{{description}}</p>
+          <p>$ {{price}}</p>
+          <p>Disponibles: {{stock}}</p>
+          <div class="add-to-cart">
+            <div type="'button">Añadir</div>
+          </div>
         </div>
       {{/with}}
     {{/each}}
   {{else}}
     <h3>You have not received any product yet</h3>
   {{/if}}
+</div>
 </div>

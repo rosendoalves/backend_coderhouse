@@ -1,23 +1,26 @@
-<h2>Login</h2>
+<h2>TodoCompras <i class="fa-solid fa-cart-shopping"></i></h2>
 
-<form action="" id="formLogin">
+<form action="" id="formLogin" class="container">
   <label for="">Usuario</label>
   <input type="email" name="email">
 
 
-  <label for="">Password</label>
+  <label for="">Contraseña</label>
   <input type="password" name="password">
 
-  <button type="submit">Iniciar Sesión</button>
-  <div>
-    <a href="/auth/github"><button type="button">Entrar con Github</button></a>
-  </div>
-  <div>
-  <a href="/signup"><button type="button">Registrar</button></a>
-  </div>
-  <div>
-  <a href="/recovery/"><button type="button">Recuperar contraseña</button></a>
-  </div>
+  <div class="login-buttons">
+    <div  class="login">
+      <button type="submit">Iniciar Sesión</button>
+    </div>
+    <div  class="github">
+   <a href="/auth/github"> <button type="button">  <i class="fa-brands fa-github"></i> Ingresar con Github</button></a>
+    </div>
+    <div class="login">
+      <a href="/signup">Registrar</a>
+    </div>
+    <div  class="login">
+      <a href="/recovery/">Recuperar contraseña</a>
+    </div>
 </form>
 
 <script src="/js/login.js"></script>
