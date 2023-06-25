@@ -4,7 +4,6 @@ faker.locale = 'es'
 
 const generateProducts = (quantity) => {
   const numOfProducts = quantity ? quantity : 100
-  console.log("🚀 ~ file: productMock.js:7 ~ generateProducts ~ numOfProducts:", numOfProducts)
 
   const products = []
   for (let i = 0; i < numOfProducts; i++) {
@@ -20,7 +19,6 @@ const generateProducts = (quantity) => {
       category: faker.commerce.product()
     })
   }
-  console.log("🚀 ~ file: productMock.js:9 ~ generateProducts ~ products:", products)
 
   return products
 }

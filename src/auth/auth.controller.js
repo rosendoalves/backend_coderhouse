@@ -27,7 +27,11 @@ this.post('/', ['PUBLIC'], passport.authenticate('login', {failureRedirect:'auth
     const currentDate = new Date();
     await User.updateOne({ _id: req.user._id }, {last_connection: currentDate});
     // res.status(201).json({ message: 'Sesión iniciada' })
-    res.redirect('/products')
+    if(req.user.role === 'ADMIN') {
+      res.redirect('/admin')
+    } else {
+      res.redirect('/products')
+    }
   } catch (error) {
     // console.log(error)
     req.logger.error("Usuario no autenticado")
@@ -52,19 +56,33 @@ this.get(
   passport.authenticate('github', { failureRedirect: '/login' }),
   async (req, res) => {
     req.session.user = req.user;
-    res.redirect('/products');
+    const currentDate = new Date();
+    await User.updateOne({ _id: req.user._id }, {last_connection: currentDate});
+    if(req.user.role === 'ADMIN') {
+      res.redirect('/admin')
+    } else {
+      res.redirect('/products')
+    }
   }
 );
 
-this.post('/logout', ['PUBLIC'], async(req, res) => {
+this.get('/logout', ['PUBLIC'], async(req, res) => {
   const currentDate = new Date();
-  await User.updateOne({ _id: req.user._id }, {last_connection: currentDate});
-  req.session.destroy(error => {
-    if (error) return res.json({ error })
-    res.redirect('/login')
-  })
-})
+  // console.log(req.user)
+  try {
+    await User.updateOne({ _id: req.user._id }, {last_connection: currentDate});
+    req.session.destroy(err => {
+      if (err) {
+        res.json({ msg: err })
+      }
+      res.redirect("/login");
+    })
   }
+  catch (error) {
+    res.sendServerError(`something went wrong ${error}`)
+  }
+})
+}
 }
 
 module.exports = AuthRouter

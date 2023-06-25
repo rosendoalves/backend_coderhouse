@@ -63,7 +63,7 @@ const startChat = async () => {
         },
         body: JSON.stringify(userMessage)
       })
-      .then(data => console.log(data))
+      // .then(data => console.log(data))
       .catch(error => console.error(error))
     }
   })

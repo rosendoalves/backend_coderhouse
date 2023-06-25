@@ -22,7 +22,6 @@ form.addEventListener('submit', e => {
   })
   .then(response => response.json())
   .then(response => {
-      console.log("🚀 ~ file: reset.js:43 ~ response:", response)
       if (response.status === 'success') {
         Swal.fire({
           text: `${response.message}`,

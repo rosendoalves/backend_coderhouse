@@ -1,0 +1,29 @@
+<div class="header">
+  <h2>Bienvenido Administrador <i class="fa-solid fa-lock"></i></h2>
+  <a href="/auth/logout" class="logout-button"><button>Cerrar sesión</button></a>
+</div>
+
+<div class="users-section">
+  <h3>
+    Usuarios
+  </h3>
+  <div class="del-button" id="deleteUsersButton"><button>Eliminar usuarios antiguos</button></a></div>
+  <div>
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Correo</th>
+          <th>Rol</th>
+          <th>Última conexión</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="data-users">
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="/js/admin.js"></script>

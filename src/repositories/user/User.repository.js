@@ -1,4 +1,5 @@
-const UserDTO = require('../../dto/User.dto')
+const UserDTO = require('../../dto/User.dto');
+const UserGetDTO = require('../../dto/UserGet.dto');
 
 class UserRepository {
     constructor(dao){
@@ -16,12 +17,16 @@ class UserRepository {
     }
 
     find = async() => {
-        // try {
+        try {
             const response = await this.dao.find();
-            return response;
-        // } catch (error) {
-            // throw error
-        // }
+            if(response.length > 0) {
+            const users = response.map(item => new UserGetDTO(item))
+            return users;
+            }    
+            return response
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     findById = async(id) => {
@@ -59,9 +64,9 @@ class UserRepository {
         }
     }
 
-    deleteMany = async() => {
+    deleteMany = async(filter) => {
         try {
-            const response = await this.dao.deleteMany()
+            const response = await this.dao.deleteMany(filter)
             return response
         } catch (error) {
             console.log(error);

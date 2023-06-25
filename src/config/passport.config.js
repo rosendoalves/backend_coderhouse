@@ -25,7 +25,7 @@ const initializePassport = () => {
               }
     
               if (user) {
-                console.log('El usuario ya existe');
+                // console.log('El usuario ya existe');
                 return done(null, false);
               }
 
@@ -68,7 +68,7 @@ const initializePassport = () => {
             try {
               const user = await User.findOne({ email: username });
               if (!user) {
-                console.log('Usuario no existe');
+                // console.log('Usuario no existe');
                 return done(null, false);
               }
             
@@ -100,7 +100,7 @@ const initializePassport = () => {
           },
           async (accessToken, refreshToken, profile, done) => {
             try {
-              console.log(profile);
+              // console.log(profile);
               const user = await User.findOne({ email: profile._json.email });
               if (!user) {
                 const newUserInfo = {

@@ -21,7 +21,6 @@ form.addEventListener('submit', e => {
     body
   })
     .then(response => {
-      console.log("🚀 ~ file: recovery.js:38 ~ response:", response);
       if (response.redirected) {
         Swal.fire({
           text: "Enviamos un correo para recuperar contraseña",

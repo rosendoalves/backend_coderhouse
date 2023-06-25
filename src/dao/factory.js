@@ -3,7 +3,7 @@ const mongoConnect = require('../config/mongoConfig/config.mongo');
 
 switch (persistence) {
     case "memory":
-        console.log('File System is available')
+        // console.log('File System is available')
         // module.exports = require("./fsClassManagers/product/ProductManager")
         module.exports = require("./fsClassManagers/user/UserManager")
     break;

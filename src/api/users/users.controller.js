@@ -4,9 +4,6 @@ const User = require('../../repositories/user');
 const uploader = require('../../utils/multer.utils');
 const path = require('path');
 const fs = require('fs');
-// const UserDao = require('../../dao/User.dao')
-// const User = new UserDao()
-// const {createHash} = require('../../utils/cryptPassword')
 
 class UsersRouter extends Route {
   init(){
@@ -14,7 +11,6 @@ this.post('/', ['PUBLIC'], passport.authenticate('register', {failureRedirect:'u
   try {
     res.redirect('/login')
   } catch (error) {
-    // console.log(error)
     if (newUser.code === 11000) return res.status(400).json({ error: 'El usuario ya existe' })
     res.status(500).json({ error: 'Internal server error' })
   }
@@ -58,6 +54,24 @@ this.put('/premium/:uid', ['USER', 'PREMIUM'], async (req, res) => {
   }
 });
 
+this.put('/change-role/:uid', ['ADMIN'], async (req, res) => {
+  try {
+    const {uid} = req.params
+    const user = await User.findById(uid)
+    if(user) {
+      const update = {
+        role: user.role === 'ADMIN' ? 'PREMIUM' : 'ADMIN'
+      };
+      await User.updateOne({_id: uid}, update)
+      return res.send(`Rol cambiado a ${user.role == 'ADMIN' ? 'PREMIUM' : 'ADMIN'}`)
+    } else {
+      res.send('No se puede actualizar porque no se encuentra el usuario')
+    }
+  } catch (error) {
+    res.send(`Something went wrong: ${error}`)
+  }
+})
+
 this.post('/:uid/documents', ["USER", "ADMIN", "PREMIUM"], uploader.any(), async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
@@ -69,31 +83,7 @@ this.post('/:uid/documents', ["USER", "ADMIN", "PREMIUM"], uploader.any(), async
         if (currentUser.role === "PREMIUM") {
           return res.sendSuccess("Ya eres Premium")
         }
-
         res.send(`Tus archivos se cargaron correctamente`)
-
-    // const { uid } = req.params;
-    // const user = await User.findById(uid);
-
-    // if (user) {
-    //   const update = {
-    //     documents: user.documents.length > 0 ? [...user.documents] : [],
-    //   };
-
-    //   // Procesar cada archivo adjunto
-    //   req.files.forEach((file) => {
-    //     const newDocument = {
-    //       name: file.originalname,
-    //       reference: file.path,
-    //     };
-    //     update.documents.push(newDocument);
-    //   });
-
-    //   const userUpdate = await User.updateOne({ _id: uid }, update);
-    //   return res.send(userUpdate);
-    // } else {
-    //   return res.status(404).send('No se puede actualizar porque no se encuentra el usuario');
-    // }
   } catch (error) {
     return res.status(500).send(`Something went wrong: ${error}`);
   }
@@ -102,6 +92,47 @@ this.post('/:uid/documents', ["USER", "ADMIN", "PREMIUM"], uploader.any(), async
 
 this.get('/failRegister', ['PUBLIC'], async(req,res) => {
   res.send({error:"Failed Register"})
+})
+
+
+this.get('/', ['ADMIN'], async(req,res) => {
+  const users = await User.find()
+  const filteredUsers = users.filter(user => user.email != req.user.email);
+  res.send(filteredUsers)
+})
+
+this.delete('/:id', ['ADMIN'], async(req,res) => {
+  try {
+    const id = req.params.id
+        const user = await User.deleteOne(id)
+        res.send(user)
+
+    return 'Usuario eliminado'
+    
+} catch (error) {
+    req.logger.error('Sin resultado')
+}
+})
+
+
+this.delete('/', ['ADMIN'], async(req,res) => {
+  try {
+      const currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() - 8); // Restar 48 horas
+
+      const filter = {
+        last_connection: {
+          $lt: currentDate
+        }
+      };
+        const users = await User.deleteMany(filter)
+        res.send(users)
+
+    return 'Usuarios eliminados con última conexión superior a dos días'
+    
+} catch (error) {
+    req.logger.error('Sin resultado')
+}
 })
   }
 }

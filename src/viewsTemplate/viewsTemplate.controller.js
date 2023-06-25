@@ -5,9 +5,10 @@ const ProductManager = new ProductDao()
 const CartDao = require('../dao/mongoClassManagers/cart/Cart.dao')
 const CartManager = new CartDao()
 const transport = require('../utils/email.utils')
-const User = require('../repositories/user')
+// const User = require('../repositories/user')
 const { emailUser } = require('../config/email.config')
 const { isValidPasswordMethod, createHash } = require('../utils/cryptPassword')
+const User = require('../repositories/user/User.repository')
 
 class ViewsTemplateRouter extends Route {
   init() {
@@ -23,6 +24,10 @@ this.get('/login', ['PUBLIC'], publicAccess, (req, res) => {
 
 this.get('/signup', ['PUBLIC'], publicAccess, (req, res) => {
   res.render('signup.handlebars')
+})
+
+this.get('/admin', ['ADMIN'], privateAccess, async(req, res) => {
+  res.render('admin.handlebars')
 })
 
 this.get('/products', ['PUBLIC'],  async(req, res) => {

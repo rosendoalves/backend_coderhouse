@@ -1,6 +1,16 @@
 const User = require("../models/User.model")
 
-class ProductDao {
+class UserDao {
+
+  async find() {
+    try {
+      const users = await User.find()
+      return users
+    } catch (error) {
+      return error
+    }
+    
+  }
 
   async findOne(email) {
     try {
@@ -33,8 +43,26 @@ class ProductDao {
 
   async updateOne(id, newUser) {
     try {
-      const user = User.findOne(id)
       const response = await User.updateOne({ _id: id }, newUser)
+      return response
+    } catch (error) {
+      return error
+    }
+  
+  }
+  async deleteOne(id) {
+    try {
+      const user = User.findOne(id)
+      const response = await User.deleteOne({ _id: id }, user)
+      return response
+    } catch (error) {
+      return error
+    }
+ 
+  }
+  async deleteMany(filter) {
+    try {
+      const response = await User.deleteMany(filter)
       return response
     } catch (error) {
       return error
@@ -42,4 +70,4 @@ class ProductDao {
   }
 }
 
-module.exports = ProductDao
+module.exports = UserDao
