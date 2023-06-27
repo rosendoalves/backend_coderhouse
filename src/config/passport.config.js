@@ -100,7 +100,7 @@ const initializePassport = () => {
           },
           async (accessToken, refreshToken, profile, done) => {
             try {
-              // console.log(profile);
+              console.log(profile);
               const user = await User.findOne({ email: profile._json.email });
               if (!user) {
                 const newUserInfo = {
@@ -112,7 +112,7 @@ const initializePassport = () => {
                 };
     
                 const newUser = await User.create(newUserInfo);
-                req.logger.info("Nuevo usuario registrado")
+                // req.logger.info("Nuevo usuario registrado")
                 return done(null, newUser);
               }
               done(null, user);
