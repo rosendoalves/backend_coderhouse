@@ -5,6 +5,7 @@ const User = require('../repositories/user')
 const GitHubStrategy = require('passport-github2');
 const { isValidPasswordMethod } = require('../utils/cryptPassword')
 const { clientID_github, clientSecret_github } = require('./githubAuth.config');
+const { url } = require('../config/index')
 const userError = require('../utils/errors/user/user.error');
 
 const LocalStrategy = local.Strategy
@@ -96,7 +97,7 @@ const initializePassport = () => {
           {
             clientID: clientID_github,
             clientSecret: clientSecret_github,
-            callbackURL: 'http://localhost:3001/auth/githubcallback',
+            callbackURL: `http://${url}/auth/githubcallback}`,
           },
           async (accessToken, refreshToken, profile, done) => {
             try {

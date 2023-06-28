@@ -7,7 +7,8 @@ const config = {
     passDb: process.env.PASS_DB || 'admin',
     msPass: process.env.MONGO_STORE_PASS || 'admin'
   },
-  persistence: process.env.PERSISTENCE || 'mongo'
+  persistence: process.env.PERSISTENCE || 'mongo',
+  url:  process.env.URL || `localhost:${this.port}`
 }
 
 module.exports = config
