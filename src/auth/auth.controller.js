@@ -73,7 +73,8 @@ this.get('/logout', ['PUBLIC'], async(req, res) => {
     await User.updateOne({ _id: req.user._id }, {last_connection: currentDate});
     req.session.destroy(err => {
       if (err) {
-        res.json({ msg: err })
+        // res.json({ msg: err })
+        res.redirect("/login");
       }
       res.redirect("/login");
     })

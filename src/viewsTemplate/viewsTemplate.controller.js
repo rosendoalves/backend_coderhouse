@@ -3,7 +3,7 @@ const { publicAccess, privateAccess } = require('../middlewares')
 const ProductDao = require('../dao/mongoClassManagers/product/Product.dao')
 const ProductManager = new ProductDao()
 const CartDao = require('../dao/mongoClassManagers/cart/Cart.dao')
-const CartManager = new CartDao()
+const Cart = new CartDao()
 const transport = require('../utils/email.utils')
 // const User = require('../repositories/user')
 const { emailUser } = require('../config/email.config')
@@ -38,12 +38,21 @@ this.get('/products', ['PUBLIC'],  async(req, res) => {
   res.render('products.handlebars', {products, payload, user, admin})
 })
 
-this.get('/carts/:cid', ['PUBLIC'], async(req, res) => {
-  const {cid} = req.params
-      const cart = await CartManager.findOne(cid)  
-      const {products} = cart
-      res.render('cart.handlebars', {cart, products})
-})
+this.get('/cart', ['PUBLIC'], async (req, res) => {
+  const currentUserEmail = req.user.email;
+  const cart = await Cart.findOneByOwner(currentUserEmail);
+
+  // Calcular los totales por producto
+  const products = cart.products.map((prod) => {
+    const total = prod.quantity * prod.product.price;
+    prod.total = total
+    return  prod ;
+  });
+  console.log("🚀 ~ file: viewsTemplate.controller.js:50 ~ ViewsTemplateRouter ~ products ~ products:", products)
+
+  res.render('cart.handlebars', { cart, products });
+});
+
 
 this.get('/loggerTest/:clase', ['PUBLIC'], async(req, res) => {
   try {
@@ -146,6 +155,18 @@ catch (error) {
     res.sendServerError(`something went wrong ${error}`)
 }
 })
+
+
+this.get('/owner', ['PUBLIC'], async(req, res) => {
+  try {
+    const currentUserEmail = req.user.email;
+    const existingCart = await Cart.findOneByOwner(currentUserEmail);
+    res.send(existingCart);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Error al obtener el cartId');
+  }
+});
 
 this.post('/password-update', ['PUBLIC'], async (req, res) => {
   try {

@@ -37,7 +37,8 @@ this.get('/:cid', ['PUBLIC'], async (req, res) => {
     }
 })
 
-this.post('/:cid/purchase', ['USER'], async (req, res) => {
+
+this.post('/:cid/purchase', ['PUBLIC'], async (req, res) => {
     try {
       const { cid } = req.params;
       const cart = await Cart.findOne(cid);
@@ -100,6 +101,12 @@ this.post('/:cid/purchase', ['USER'], async (req, res) => {
 
 this.post('/', ['PUBLIC', 'PREMIUM'], async(req, res) => {
     const form = req.body
+    const currentUserEmail = req.user.email;
+    const existingCart = await Cart.findOneByOwner(currentUserEmail);
+
+    if (existingCart) {
+      return res.send('Ya tienes un carrito creado');
+    }
     const products = await Product.find()
     let foundProduct = false
     if(req.user.role == 'PREMIUM') {
@@ -110,7 +117,10 @@ this.post('/', ['PUBLIC', 'PREMIUM'], async(req, res) => {
     if(foundProduct) {
       return res.send('No puedes agregar tus propios productos')
     }
-    const cart = await Cart.create(form)  
+    const cart = await Cart.create({
+      ...form,
+      owner: currentUserEmail,
+    });
     res.send(cart)
 })
 
@@ -131,12 +141,51 @@ this.put('/:cid/products/:pid', ['PUBLIC', 'PREMIUM'], async(req, res) => {
     res.send(cart)
 })
 
-this.put('/:cid', ['PUBLIC'], async(req, res) => {
-    const {cid} = req.params
-    const form = req.body
-    const cart = await Cart.updateOnes(cid, form)  
-    res.send(cart)
-})
+this.put('/:cid', ['PUBLIC'], async (req, res) => {
+  const { cid } = req.params;
+  const form = req.body;
+  
+  try {
+    const existingCart = await Cart.findOne({ _id: cid });
+    
+    if (!existingCart) {
+      return res.status(404).send('Carrito no encontrado');
+    }
+
+    const currentProducts = existingCart.products.map(item => ({
+      product: ObjectId(item.product._id).toString(),
+      quantity: item.quantity
+    }));
+    console.log(currentProducts)
+    console.log(form)
+
+    // Actualizar los productos en el carrito con los detalles proporcionados en 'form'
+    form.forEach(updatedProduct => {
+      const productIndex = currentProducts.findIndex(item => item.product === updatedProduct.product);
+      
+      if (productIndex !== -1) {
+        // Si el producto existe en el carrito, actualizar su cantidad
+        currentProducts[productIndex].quantity += updatedProduct.quantity;
+      } else {
+        // Si el producto no existe en el carrito, agregarlo al arreglo de productos
+        currentProducts.push({
+          product: updatedProduct.product,
+          quantity: updatedProduct.quantity
+        });
+      }
+    });
+    
+    // Guardar los cambios en el carrito
+    existingCart.products = currentProducts;
+    await existingCart.save();
+    
+    res.send(existingCart);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al actualizar el carrito');
+  }
+});
+
 
 this.delete('/:cid', ['PUBLIC'],  async(req, res) => {
     const id = req.params.cid

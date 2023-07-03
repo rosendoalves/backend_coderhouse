@@ -21,6 +21,16 @@ class CartDao {
     
   }
 
+  async findOneByOwner(email) {
+    try {
+      const cart = await Cart.findOne({owner: email}).populate('products.product')
+      return cart
+    } catch (error) {
+      return error
+    }
+    
+  }
+
   async create(newCart) {
     try {
       const response = await Cart.create(newCart)
@@ -42,7 +52,7 @@ class CartDao {
   
   async updateOnes(cartId, form) {
     try {
-      await Cart.updateOne({ _id: cartId }, { $set: { 'products': form } })
+       await Cart.updateOne({ _id: cartId }, { $push: { products: { $each: form } } });
       return 'Productos actualizados en el carrito'
     } catch (error) {
       return 'error'

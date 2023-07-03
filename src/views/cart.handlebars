@@ -1,20 +1,46 @@
 <div>
-<h1>Cart</h1>
-{{#if cart}}
-<h1>N° {{cart._id}}</h1>
-{{#each products}}
-    {{#with this}}
-    <div>
-        <h4> {{_id}} - Product: {{product.title}}</h4>
-        <p>Description: {{product.description}}</p>
-        <p>Price: {{product.price}}</p>
-        <p>Stock: {{product.stock}}</p>
-        <div type="button">Delete</div>
-    </div>
-    {{/with}}
-{{/each}}
-{{else}}
-<h3>You have not received any cart yet</h3>
-{{/if}}
-<div type="button"><a href="/products">Back a Products</a></div>
+  <div class="header">
+    <h1><a href="/products">Volver</a></h1>
+  </div>
+  <div class="title-shop">
+    <h1 class="title">Carrito de compras</h1>
+    <h1 class="cart-id">ID del carrito: {{cart._id}}</h1>
+  </div>
+  <table class="cart-table">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+        <th>Imagen</th>
+        <th>Código</th>
+        <th>Categoría</th>
+        <th>Cantidad</th>
+        <th>Total</th>
+        <th></th> <!-- Columna adicional para el botón Eliminar -->
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+      <tr>
+        {{#with this}}
+        <td>{{this.product.title}}</td>
+        <td>{{this.product.description}}</td>
+        <td>{{this.product.price}}</td>
+        <td><img src="{{this.product.thumbnail}}" alt="Miniatura del producto"></td>
+        <td>{{this.product.code}}</td>
+        <td>{{this.product.category}}</td>
+        {{/with}}
+        <td>{{this.quantity}}</td>
+        <td>{{this.total}}</td>
+        <td><button class="delete-btn delete-button" data-product-id="{{this.product._id}}">Eliminar</button></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <p class="total">Total a pagar: {{total}}</p>
+
+  <!-- Botón Finalizar compra -->
+ <button class="finish-btn" onclick="purchase('{{cart._id}}')">Finalizar compra</button>
 </div>
+<script src="/js/cart.js"></script>

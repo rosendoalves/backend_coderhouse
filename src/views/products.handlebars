@@ -3,7 +3,7 @@
   {{#if user}}
     <h1>{{user.first_name}} {{user.last_name}}</h1>
     <h1><a href="/session/current"><i class="fa-solid fa-user"></i> Perfil</a></h1>
-    <h1><a href="/carts/647b3b7913a444c39b2337bf"><i class="fa-solid fa-cart-shopping"></i> Carrito</a></h1>
+    <h1><a href="/cart"><i class="fa-solid fa-cart-shopping"></i> Carrito</a></h1>
     <h1><a href="/auth/logout">Cerrar Sesión</a></h1>
   {{else}}
     <h3>Login Error - <a href="/auth/logout">Volver</a></h3>
@@ -13,26 +13,26 @@
   <h1>Bienvenido!</h1>
   </div>
  <div class="products-container">
-  {{#if payload}}
+   {{#if payload}}
     {{#each payload}}
-      {{#with this}}
-        <div class="card">
-          {{!-- <h4>{{_id}} - Product: {{title}}</h4> --}}
-          <img src={{thumbnail}}>
-          <h4>{{title}}</h4>
-          <p>{{description}}</p>
-          <p>$ {{price}}</p>
-          <p>Disponibles: {{stock}}</p>
-          <label for="quantity">Cantidad</label>
-          <input type="number" value="1" name="quantity">
-          <div class="add-to-cart">
-            <div type="'button">Añadir</div>
-          </div>
-        </div>
-      {{/with}}
+    {{#with this}}
+  <div class="card" data-product-id="{{_id}}">
+      <img src={{thumbnail}}>
+      <h4>{{title}}</h4>
+      <p>{{description}}</p>
+      <p>$ {{price}}</p>
+      <p>Disponibles: {{stock}}</p>
+      <label for="quantity">Cantidad</label>
+      <input type="number" value="1" name="quantity">
+       <div class="add-to-cart">
+              <button data-product-id="{{_id}}" onclick="checkCartExistence('{{_id}}')">Añadir</button>
+      </div>
+    </div>
+    {{/with}}
     {{/each}}
-  {{else}}
+    {{else}}
     <h3>You have not received any product yet</h3>
-  {{/if}}
+    {{/if}}
 </div>
 </div>
+<script src="/js/products.js"></script>

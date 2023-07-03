@@ -300,3 +300,66 @@ a button:hover {
   color: #ffd966;
 }
 
+.card .add-to-cart button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+}
+
+.card .add-to-cart button:hover {
+  background-color: #0056b3;
+}
+
+/* CART */
+/* tu_archivo_css.css */
+.cart-title {
+  color: blue;
+}
+
+.cart-table {
+  width: 100%;
+}
+
+.cart-table th,
+.cart-table td {
+  padding: 8px;
+}
+
+.cart-table img {
+  width: 50px;
+  height: auto;
+}
+
+.total {
+  font-weight: bold;
+}
+
+.delete-button {
+  background-color: red;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: white;
+  color: red;
+}
+
+.finish-btn {
+  background-color: green;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.finish-btn:hover {
+  background-color: white;
+  color: green;
+}
+
+

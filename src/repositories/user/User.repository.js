@@ -37,6 +37,14 @@ class UserRepository {
             console.log(error)
         }
     }
+    findByOwner = async(email) => {
+        try {
+            const response = await this.dao.findByOwner(email);
+            return response;            
+        } catch (error) {
+            console.log(error)
+        }
+    }
     findOne = async(email) => {
         try {
             const response = await this.dao.findOne(email);

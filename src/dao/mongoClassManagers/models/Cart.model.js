@@ -19,7 +19,8 @@ const cartSchema = new mongoose.Schema({
     ],
     default: [],
     _id: false
-  }
+  },
+  owner: String
 })
 
 cartSchema.pre('find', function () {
