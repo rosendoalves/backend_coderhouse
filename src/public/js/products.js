@@ -1,4 +1,4 @@
-let cartId = ''; 
+let cartId = '';
 
 async function getCartId() {
   const response = await fetch('/owner', {
@@ -16,7 +16,7 @@ async function getCartId() {
   }
 }
 
-getCartId()
+getCartId();
 
 async function addToCart(productId) {
   const quantityInput = document.querySelector(`div[data-product-id="${productId}"] input[name="quantity"]`);
@@ -40,39 +40,55 @@ async function addToCart(productId) {
 
   if (response.ok) {
     const cart = await response.json(); // Asignar el ID del carrito a la variable
-    console.log("🚀 ~ file: cart.js:43 ~ addToCart ~ cart:", cart)
-    cartId = cart._id; 
+    cartId = cart._id;
     console.log('Producto agregado al carrito:', cart);
+    Swal.fire({
+      text: 'Producto agregado al carrito',
+      toast: true,
+      position: 'top-center',
+    });
   } else {
     console.error('Error al agregar producto al carrito');
+    Swal.fire({
+      text: 'Error al agregar producto al carrito',
+      toast: true,
+      position: 'top-center',
+    });
   }
 }
-console.log("🚀 ~ file: cart.js:2 ~ cartId:", cartId)
 
 async function updateCart(productId) {
   const quantityInput = document.querySelector(`div[data-product-id="${productId}"] input[name="quantity"]`);
   const quantity = parseInt(quantityInput.value);
-  console.log("🚀 ~ file: cart.js:60 ~ quantity:", quantity)
 
-  console.log(cartId)
   const response = await fetch(`/api/carts/${cartId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(
-      [{
-          product: productId,
-          quantity: quantity,
-        }]
-    ),
+    body: JSON.stringify([
+      {
+        product: productId,
+        quantity: quantity,
+      },
+    ]),
   });
 
   if (response.ok) {
     const cart = await response.json();
     console.log('Carrito actualizado:', cart);
+    Swal.fire({
+      text: 'Producto actualizado en carrito',
+      toast: true,
+      position: 'top-center',
+    });
   } else {
     console.error('Error al actualizar el carrito');
+    Swal.fire({
+      text: 'Error al actualizar el carrito',
+      toast: true,
+      position: 'top-center',
+    });
   }
 }
 
@@ -85,10 +101,9 @@ addToCartButtons.forEach((button) => {
   });
 });
 
-
 async function checkCartExistence(productId) {
   if (cartId) {
-    console.log('cart id', cartId)
+    console.log('cart id', cartId);
     updateCart(productId);
   } else {
     addToCart(productId);

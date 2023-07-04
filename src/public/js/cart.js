@@ -12,7 +12,6 @@ async function getCartId() {
     const cart = await response.json();
     cartId = cart._id;
 
-    // Calcular el total a pagar
     const total = calculateTotal(cart.products);
 
     const totalElement = document.querySelector('.total');
@@ -50,16 +49,20 @@ async function deleteProduct(productId) {
   });
 
   if (response.ok) {
-    console.log(response)
-    // Swal.fire({
-    //   text: `Producto eliminado correctamente`,
-    //   toast: true,
-    //   position: 'top-right'
-    // })
-    console.log('Producto eliminado correctamente');
-    window.location.reload();
+    Swal.fire({
+      text: `Producto eliminado correctamente`,
+      toast: true,
+      position: 'top-center'
+    })
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   } else {
-    console.error('Error al eliminar el producto');
+    Swal.fire({
+      text: `'Error al eliminar el producto`,
+      toast: true,
+      position: 'top-right'
+    })
   }
 }
 
@@ -70,16 +73,45 @@ function purchase(cartId) {
       'Content-Type': 'application/json',
     },
   })
-    .then(response => {
-      if (response.ok) {
-        console.log('Compra realizada exitosamente');
-        // Realizar acciones adicionales después de la compra exitosa, si es necesario
-      } else {
-        console.error('Error al realizar la compra');
+  .then(response => response.json())
+  .then(data => {
+    if (data.message === 'Compra realizada exitosamente') {
+      let message = `Proceso finalizado bajo el ticket ${data.ticket.code} productos comprados ${data.ticket.products.length}`;
+      if (data.productsUnavailable && data.productsUnavailable.length > 0) {
+        message += '<br>No se pudo agregar los siguientes productos por falta de stock:';
+        data.productsUnavailable.forEach(item => {
+          message += `<br>${item.product.title}`;
+        });
       }
-    })
-    .catch(error => {
-      console.error('Error de red:', error);
-    });
+      
+      Swal.fire({
+        html: message,
+        toast: true,
+        position: 'top-center'
+      });
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+
+      console.log('Compra realizada exitosamente');
+      // Realizar acciones adicionales después de la compra exitosa, si es necesario
+    } else {
+      Swal.fire({
+        text: 'Error al realizar la compra',
+        toast: true,
+        position: 'top-center'
+      });
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+
+      console.error('Error al realizar la compra');
+    }
+  })
+  .catch(error => {
+    console.error('Error de red:', error);
+  });
 }
 

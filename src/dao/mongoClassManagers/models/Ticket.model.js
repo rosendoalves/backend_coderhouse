@@ -15,7 +15,17 @@ const ticketSchema = new mongoose.Schema({
     },
     purchaser: {
         type: String
-    }
+    },
+    products: {
+        type: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'product',
+          }
+        ],
+        default: [],
+        _id: false
+      }
 })
 
 ticketSchema.plugin(mongoosePaginate)

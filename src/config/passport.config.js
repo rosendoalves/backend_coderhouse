@@ -96,7 +96,8 @@ const initializePassport = () => {
           {
             clientID: clientID_github,
             clientSecret: clientSecret_github,
-            callbackURL: 'http://localhost:3001/auth/githubcallback',
+            // callbackURL: 'http://localhost:3001/auth/githubcallback',
+            callbackURL: 'http://ecoomerce-rosendo.up.railway.app/auth/githubcallback',
           },
           async (accessToken, refreshToken, profile, done) => {
             try {

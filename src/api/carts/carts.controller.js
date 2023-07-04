@@ -81,10 +81,11 @@ this.post('/:cid/purchase', ['PUBLIC'], async (req, res) => {
     const newTicketInfo = {
         code: uuidv4(),
         purchase_datatime: new Date().toLocaleString(),
+        products: productsAvailable.map(item => item.product),
         amount: productsAvailable.reduce((acc, curr) => acc + curr.product.price * curr.quantity, 0),
         purchaser: currentUser.email
     };
-  
+    console.log(productsUnavailable)
     const newTicket = await ticketsModel.create(newTicketInfo);
     const response = {
         message: 'Compra realizada exitosamente',
