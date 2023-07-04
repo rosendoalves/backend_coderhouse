@@ -40,15 +40,20 @@ this.get('/products', ['PUBLIC'],  async(req, res) => {
 
 this.get('/cart', ['PUBLIC'], async (req, res) => {
   const currentUserEmail = req.user.email;
-  const cart = await Cart.findOneByOwner(currentUserEmail);
+  let cart = []
+  let products = []
+  cart = await Cart.findOneByOwner(currentUserEmail);
 
   // Calcular los totales por producto
-  const products = cart.products.map((prod) => {
+  if(cart){
+
+    products = cart.products.map((prod) => {
     const total = prod.quantity * prod.product.price;
     prod.total = total
     return  prod ;
   });
-  console.log("🚀 ~ file: viewsTemplate.controller.js:50 ~ ViewsTemplateRouter ~ products ~ products:", products)
+}  
+  // console.log("🚀 ~ file: viewsTemplate.controller.js:50 ~ ViewsTemplateRouter ~ products ~ products:", products)
 
   res.render('cart.handlebars', { cart, products });
 });

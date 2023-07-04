@@ -136,7 +136,8 @@ this.put('/:cid/products/:pid', ['PUBLIC', 'PREMIUM'], async(req, res) => {
       })
     }
     if(foundProduct) {
-      return res.send('No puedes agregar tus propios productos')
+      // return res.send('No puedes agregar tus propios productos')
+      return res.status(400).send({error: 'No puedes agregar tus propios productos'});
     }
     const cart = await Cart.updateOne(cid, pid, form)  
     res.send(cart)
@@ -147,6 +148,18 @@ this.put('/:cid', ['PUBLIC'], async (req, res) => {
   const form = req.body;
   
   try {
+
+    const products = await Product.find()
+    let foundProduct = false
+    if(req.user.role == 'PREMIUM') {
+      form.map(item => {
+        if(products.payload.some(i => i._id.toString() === item.product && i.owner === req.user.email)) return foundProduct = true
+      })
+    }
+    if(foundProduct) {
+      // return res.status(400).send('No puedes agregar tus propios productos');
+      return res.status(400).send({error: 'No puedes agregar tus propios productos'});
+    }
     const existingCart = await Cart.findOne({ _id: cid });
     
     if (!existingCart) {

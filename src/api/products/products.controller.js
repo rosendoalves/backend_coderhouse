@@ -4,6 +4,8 @@ const ProductDao = require('../../dao/mongoClassManagers/product/Product.dao')
 const Product = new ProductDao()
 // const ProductManager =  require('../../class/ProductManager')
 const productError = require('../../utils/errors/product/product.error')
+const transport = require('../../utils/email.utils')
+const { emailUser } = require('../../config/email.config')
 
 class ProductsRouter extends Route {
     init() {
@@ -69,10 +71,11 @@ class ProductsRouter extends Route {
             }
         })
         
-        this.delete('/:pid', ['ADMIN, PREMIUM'], async(req, res) => {
+        this.delete('/:pid', ['ADMIN', 'PREMIUM'], async(req, res) => {
             try {
                 const id = req.params.pid
                 const product = await Product.findOne(id) 
+                console.log("🚀 ~ file: products.controller.js:78 ~ ProductsRouter ~ this.delete ~ product:", product)
                 if(product.owner == req.user.email) {
                     const product = await Product.deleteOne(id)
                     res.send(product)
@@ -81,6 +84,22 @@ class ProductsRouter extends Route {
                     res.send(product)
                 } else {
                     res.send('Not authorized')
+                }
+
+                if (req.user.role == 'PREMIUM' && product.owner == req.user.email) {
+                    console.log('envio correo')
+                    const mailOptions = {
+                        from: emailUser,
+                        to: req.user.email ? req.user.email : emailUser,
+                        subject: "Producto Eliminado", 
+                        html: `
+                          <div>
+                            Se informa que se borró el producto: ${product.title}
+                          </div>
+                        `,
+                        attachments: [],
+                      }
+                    await transport.sendMail(mailOptions)
                 }
                 const products = await Product.find()
                 global.io.emit("newProducts", products);

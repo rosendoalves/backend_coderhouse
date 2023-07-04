@@ -48,7 +48,7 @@ async function addToCart(productId) {
       position: 'top-center',
     });
   } else {
-    console.error('Error al agregar producto al carrito');
+    console.error('Error al agregar producto al carrito, verifica que el producto no sea tuyo');
     Swal.fire({
       text: 'Error al agregar producto al carrito',
       toast: true,
@@ -83,7 +83,7 @@ async function updateCart(productId) {
       position: 'top-center',
     });
   } else {
-    console.error('Error al actualizar el carrito');
+    console.error('Error al actualizar el carrito, verifica que el producto no sea tuyo');
     Swal.fire({
       text: 'Error al actualizar el carrito',
       toast: true,
